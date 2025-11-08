@@ -6,7 +6,9 @@ import { getEnrolledDivisi } from "./fetch";
 
 export async function getCurrentUser() {
   const headersList = headers();
-  const id = headersList.get("x-user-id");
+  const getHeader = (key: string) => headersList.get(key) ?? "";
+
+  const id = getHeader("x-user-id");
   if (!id) return null;
 
   return {

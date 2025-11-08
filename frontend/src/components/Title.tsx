@@ -4,7 +4,7 @@ import Link from "next/link";
 import logo from "@/logos/logo.svg";
 
 const TitleContent = () => (
-  <h1 className="leading-tight leading text-wrap font-semibold">
+  <h1 className="leading text-wrap font-semibold leading-tight">
     <div className="flex flex-col">
       <AnimatedGradientText className="border-none p-0 font-semibold">
         <span className="inline animate-gradient bg-gradient-to-r from-custom-peach via-custom-blue to-custom-peach bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent">
