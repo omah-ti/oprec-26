@@ -13,8 +13,8 @@ const Hero = () => {
   return (
     <>
       <Container
-        parentClass="overflow-y-hidden"
-        className="flex h-[67vh] w-full flex-col items-center justify-end gap-4 bg-custom-black xs:h-[32rem] sm:h-[75vh]"
+        parentClass="ooverflow-y-hidden"
+        className="flex h-[55vh] w-full flex-col items-center justify-end gap-4 bg-custom-black xs:h-[32rem] sm:h-[75vh]"
       >
         {/* logo himakom omahti */}
         <Logos />
@@ -40,6 +40,11 @@ const TitleCTA = () => (
         Daftar Sekarang
       </Button>
     </Link>
+    <Link href={`guidebook`}>
+      <Button variant={`white`} size={`lg`} className="shadow-2xl">
+        Guidebook
+      </Button>
+    </Link>
   </div>
 );
 
@@ -53,20 +58,18 @@ const Logos = () => (
 const Background = () => (
   <>
     {/* image */}
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="relative h-[600px] w-full">
         <Image
-          className="absolute z-10 -right-[2rem] xxs:right-[2.7rem] xs:right-[9rem] top-6 object-contain
-          w-full h-[80vh] min-w-[500px]"
-          src={omahtiModel} 
+          className="absolute -right-[2rem] top-6 z-10 h-[80vh] w-full min-w-[500px] object-contain xxs:right-[2.7rem] xs:right-[9rem]"
+          src={omahtiModel}
           width={503}
           height={906}
           alt=""
           priority
         />
         <Image
-          className="absolute z-10 -left-[2rem] xxs:left-[2.7rem] xs:left-[9rem] top-6 object-contain
-          w-full h-[80vh] min-w-[500px] p-8"
+          className="absolute -left-[2rem] top-6 z-10 h-[80vh] w-full min-w-[500px] object-contain p-8 xxs:left-[2.7rem] xs:left-[9rem]"
           src={himakomModel}
           width={500}
           height={906}
