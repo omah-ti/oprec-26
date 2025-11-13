@@ -33,7 +33,10 @@ const Linimasa = () => {
 };
 
 const ImageCard = () => (
-  <div className="relative h-full min-h-40 w-full overflow-hidden rounded-xl" data-gsap="down">
+  <div
+    className="relative h-full min-h-40 w-full overflow-hidden rounded-xl"
+    data-gsap="down"
+  >
     <Image
       className="object-cover"
       sizes="100%"
@@ -53,7 +56,10 @@ const LinimasaCard = ({
   date: string;
   description: string;
 }) => (
-  <div className="flex w-full flex-col justify-between space-y-3 rounded-xl bg-custom-gray-dark p-4" data-gsap="up">
+  <div
+    className="flex w-full flex-col justify-between space-y-3 rounded-xl bg-custom-gray-dark p-4"
+    data-gsap="up"
+  >
     {/* top part */}
     <div>
       <h1 className="text-xl font-semibold">{title}</h1>

@@ -13,8 +13,8 @@ const Hero = () => {
   return (
     <>
       <Container
-        parentClass="ooverflow-y-hidden"
-        className="flex h-[55vh] w-full flex-col items-center justify-end gap-4 bg-custom-black xs:h-[32rem] sm:h-[75vh]"
+        parentClass=" "
+        className="flex h-[67vh] w-full flex-col items-center justify-end gap-4 bg-custom-black pb-10 xs:h-[32rem] sm:h-[75vh]"
       >
         {/* logo himakom omahti */}
         <Logos />
@@ -31,20 +31,30 @@ const Hero = () => {
 };
 
 const TitleCTA = () => (
-  <div className="z-20 flex flex-col items-center gap-4">
+  <div className="z-20 mb-10 flex flex-col items-center gap-4">
     <h1 className="text-center text-3xl font-semibold drop-shadow-xl sm:text-5xl">
       Be Great. Be Us.
     </h1>
-    <Link href={`dashboard`}>
-      <Button variant={`white`} size={`lg`} className="shadow-2xl">
-        Daftar Sekarang
-      </Button>
-    </Link>
-    <Link href={`guidebook`}>
-      <Button variant={`white`} size={`lg`} className="shadow-2xl">
-        Guidebook
-      </Button>
-    </Link>
+    <div className="flex flex-row items-center justify-center gap-4">
+      <Link href={`dashboard`}>
+        <Button
+          variant={`white`}
+          size={`lg`}
+          className="duration-250 relative z-50 shadow-[0_10px_25px_rgba(255,255,255,0.45)] transition-all ease-in-out hover:shadow-[0_8px_25px_rgba(255,255,255,0.65)]"
+        >
+          Daftar Sekarang
+        </Button>
+      </Link>
+      <Link href={`guidebook`}>
+        <Button
+          variant={`secondary`}
+          size={`lg`}
+          className="duration-250 relative z-50 shadow-[0_10px_25px_rgba(0,0,0,0.5)] transition-all ease-in-out hover:shadow-[0_8px_25px_rgba(0,0,0,0.7)]"
+        >
+          Lihat Guidebook
+        </Button>
+      </Link>
+    </div>
   </div>
 );
 
@@ -57,8 +67,9 @@ const Logos = () => (
 
 const Background = () => (
   <>
-    {/* image */}
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    {/* gradient wrapper biar gak tembus bawah */}
+    <div className="absolute inset-0 overflow-hidden">
+      {/* image layer */}
       <div className="relative h-[600px] w-full">
         <Image
           className="absolute -right-[2rem] top-6 z-10 h-[80vh] w-full min-w-[500px] object-contain xxs:right-[2.7rem] xs:right-[9rem]"
@@ -77,14 +88,17 @@ const Background = () => (
           priority
         />
       </div>
+
+      {/* circle in the background */}
+      <div className="absolute bottom-[-10rem] left-1/2 z-0 aspect-square w-full max-w-2xl -translate-x-1/2 rounded-full bg-custom-gray sm:bottom-[-12rem] md:bottom-[-13rem] lg:bottom-[-14rem]" />
+
+      {/* gradients */}
+      <div className="absolute bottom-0 left-1/2 z-10 h-[85%] w-full bg-gradient-to-t from-custom-blue/100 via-custom-blue/20 to-transparent opacity-100 blur-2xl" />
+      <div className="absolute bottom-0 right-1/2 z-10 h-[85%] w-full bg-gradient-to-t from-custom-orange/100 via-custom-orange/20 to-transparent opacity-100 blur-2xl" />
+
+      {/* mask layer to stop gradient overflow */}
+      <div className="absolute bottom-0 left-0 z-20 h-[45px] w-full bg-custom-black sm:h-[55px]" />
     </div>
-
-    {/* circle in the background */}
-    <div className="absolute bottom-[-4rem] z-0 aspect-square h-auto w-full max-w-2xl rounded-full bg-custom-gray lg:bottom-[-10rem]" />
-
-    {/* gradients */}
-    <div className="absolute bottom-0 left-1/2 right-0 top-0 z-10 bg-gradient-to-t from-custom-blue via-transparent to-transparent" />
-    <div className="absolute bottom-0 left-0 right-1/2 top-0 z-10 bg-gradient-to-t from-custom-orange via-transparent to-transparent" />
   </>
 );
 
@@ -95,26 +109,41 @@ const BenefitsMarquee = () => {
     "Projects and Portfolio",
     "Relational Experience",
   ];
+
   return (
-    <div className="relative">
+    <div className="relative z-50 mt-3 w-full overflow-visible xs:-mt-10 sm:-mt-12 lg:-mt-12">
       {/* Left shadow */}
-      <div className="absolute left-0 top-0 z-10 h-full w-28 bg-gradient-to-r from-custom-gray-dark to-transparent" />
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 z-20 hidden h-10 w-6 bg-gradient-to-r from-custom-gray-dark/100 to-transparent xs:block sm:h-16 md:h-20 md:w-20"
+        aria-hidden="true"
+      />
 
       {/* Right shadow */}
-      <div className="absolute right-0 top-0 z-10 h-full w-28 bg-gradient-to-l from-custom-gray-dark to-transparent" />
+      <div
+        className="pointer-events-none absolute bottom-0 right-0 z-20 hidden h-10 w-6 bg-gradient-to-l from-custom-gray-dark/100 to-transparent xs:block sm:h-16 md:h-20 md:w-20 lg:w-28"
+        aria-hidden="true"
+      />
 
       {/* Marquee content */}
-      <Marquee className="bg-custom-gray-dark">
-        {Benefits.map((benefit, i) => (
-          <div
-            key={i}
-            className="mx-4 flex shrink-0 flex-row items-center gap-2 py-2 font-medium text-custom-silver sm:mx-8 sm:py-4 md:py-8 lg:mx-16 lg:text-lg"
-          >
-            <House size={24} className="h-4 lg:h-5" />
-            {benefit}
-          </div>
-        ))}
-      </Marquee>
+      <div className="z-60 relative bottom-1 flex justify-center xs:bottom-[0.35rem] sm:bottom-2">
+        <Marquee className="flex items-center bg-custom-gray-dark">
+          {Benefits.map((benefit, i) => (
+            <div
+              key={i}
+              className="mx-1 flex shrink-0 flex-row items-center justify-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-medium text-custom-silver xs:mx-2 xs:px-3 xs:py-2 xs:text-sm sm:mx-4 sm:px-4 sm:py-2.5 sm:text-base md:mx-6 md:px-6 md:py-3 md:text-base lg:mx-8 lg:px-8 lg:py-5 lg:text-lg"
+            >
+              <House
+                size={20}
+                className="h-4 w-4 xs:h-4 xs:w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6"
+              />
+              <span className="text-center">{benefit}</span>
+            </div>
+          ))}
+        </Marquee>
+      </div>
+
+      {/* bottom mask */}
+      <div className="absolute bottom-0 left-0 z-30 h-[6px] w-full bg-custom-black xs:h-[8px] sm:h-[10px]" />
     </div>
   );
 };

@@ -15,32 +15,31 @@ const Faq = () => {
   return (
     <Container>
       <Header>Empowering Individuals, Building Communities</Header>
-      <div className="w-full lg:flex lg:items-start lg:justify-start gap-8 lg:gap-3 space-y-3 lg:space-y-0">
-        <div className="flex flex-col gap-3 lg:w-1/2">
-          {/* images card */}
-          <div className="lg:mb-8 grid grid-cols-1 gap-3">
-            <ImagesCard variant="omahti" />
-            {/* <ImagesCard variant="himakom" /> */}
-          </div>
 
-          {/* accordion faqs */}
-          <div className="grid grid-cols-1 gap-8 lg:gap-3">
-            <Questions variant="omahti" FAQ={OMAHTI_FAQ} />
-            {/* <Questions variant="himakom" FAQ={HIMAKOM_FAQ} /> */}
-          </div>
+      {/* images row */}
+      <div className="w-full gap-8 space-y-3 lg:flex lg:items-start lg:justify-start lg:gap-3 lg:space-y-0">
+        <div className="flex flex-col gap-3 lg:w-1/2">
+          <ImagesCard variant="omahti" />
         </div>
 
         <div className="flex flex-col gap-3 lg:w-1/2">
-          <div className="lg:mb-8 grid grid-cols-1 gap-3">
-            {/* <ImagesCard variant="omahti" /> */}
-            <ImagesCard variant="himakom" />
-          </div>
+          <ImagesCard variant="himakom" />
+        </div>
+      </div>
 
-          {/* accordion faqs */}
-          <div className="grid grid-cols-1 gap-8 lg:gap-3">
-            {/* <Questions variant="omahti" FAQ={OMAHTI_FAQ} /> */}
-            <Questions variant="himakom" FAQ={HIMAKOM_FAQ} />
-          </div>
+      {/* merged FAQ title below both images */}
+      <div className="mt-6 w-full rounded-lg bg-custom-gray-dark px-4 py-3 text-center font-semibold">
+        Frequently Asked Questions – <span>Open Recruitment 2025</span>
+      </div>
+
+      {/* FAQ section */}
+      <div className="mt-4 w-full gap-8 space-y-3 lg:flex lg:items-start lg:justify-start lg:gap-3 lg:space-y-0">
+        <div className="flex flex-col gap-3 lg:w-1/2">
+          <Questions variant="omahti" FAQ={OMAHTI_FAQ} />
+        </div>
+
+        <div className="flex flex-col gap-3 lg:w-1/2">
+          <Questions variant="himakom" FAQ={HIMAKOM_FAQ} />
         </div>
       </div>
     </Container>
@@ -53,7 +52,7 @@ const ImagesCard = ({
   variant?: "omahti" | "himakom";
 }) => {
   return (
-    <div 
+    <div
       className="relative flex min-h-52 flex-col justify-end overflow-hidden rounded-xl p-4"
       data-gsap={`${variant === "omahti" ? "right" : "left"}`}
     >
@@ -72,7 +71,9 @@ const ImagesCard = ({
       </p>
 
       {/* gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-t from-custom-black/70 ${variant === 'omahti' ? 'to-custom-orange/30': 'to-custom-blue/30'}`} />
+      <div
+        className={`absolute inset-0 bg-gradient-to-t from-custom-black/70 ${variant === "omahti" ? "to-custom-orange/30" : "to-custom-blue/30"}`}
+      />
     </div>
   );
 };
@@ -86,28 +87,23 @@ const Questions = ({
 }) => {
   return (
     <div className="space-y-3">
-      <div className="w-full rounded-lg bg-custom-gray-dark px-4 py-3 font-semibold">
-        Frequently Asked Questions -{" "}
-        {variant === "omahti" ? (
-          <span className="text-custom-orange">OmahTI</span>
-        ) : (
-          <span className="text-custom-blue">Himakom</span>
-        )}
-      </div>
+      {/* <div className="w-full rounded-lg bg-custom-gray-dark px-4 py-3 font-semibold">
+        Frequently Asked Questions - Open Recruitment 2025
+      </div> */}
 
       <Accordion type="single" collapsible className="space-y-3">
         {FAQ.map((faq, i) => (
-          <AccordionItem 
-            key={i} 
-            className="border-b-0" 
+          <AccordionItem
+            key={i}
+            className="border-b-0"
             value={`item-${i}`}
             data-gsap="down"
           >
-            <AccordionTrigger className="rounded-lg bg-custom-gray-dark text-base p-4 py-5 hover:no-underline text-justify">
+            <AccordionTrigger className="rounded-lg bg-custom-gray-dark p-4 py-5 text-justify text-base hover:no-underline">
               {faq.question}
               <span className="ml-4" />
             </AccordionTrigger>
-            <AccordionContent className='text-base mt-2 py-3 px-4 rounded-lg bg-custom-gray-light text-justify text-custom-black font-medium'>
+            <AccordionContent className="mt-2 rounded-lg bg-custom-gray-light px-4 py-3 text-justify text-base font-medium text-custom-black">
               {faq.answer}
             </AccordionContent>
           </AccordionItem>

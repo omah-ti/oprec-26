@@ -20,11 +20,9 @@ const MakomtiTable = ({ allUsers, admin }: { allUsers: any; admin: any }) => {
       </thead>
       <tbody className="divide-y divide-gray-700 text-sm">
         {allUsers && allUsers.length > 0 ? (
-          allUsers.map((user: any, index: number) => 
-            (
-              <MakomtiRow key={user._id} user={user} index={index} />
-            )
-          )
+          allUsers.map((user: any, index: number) => (
+            <MakomtiRow key={user._id} user={user} index={index} />
+          ))
         ) : (
           <tr>
             <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
