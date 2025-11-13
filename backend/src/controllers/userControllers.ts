@@ -21,7 +21,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         const adminNIM: string = process.env.ADMIN_NIM || "";
         const validNIM = await Mahasiswa.findOne({ NIM }).lean();
         if(!validNIM && (NIM !== adminNIM)){
-            res.status(400).json({message: "KAMU BUKAN MAHASISWA ILMU KOMPUTER AKT 23 ATAU 24"});
+            res.status(400).json({message: "KAMU BUKAN MAHASISWA ILMU KOMPUTER AKT 24 ATAU 25"});
             return;
         }
         const userData = {email, username, password, NIM, isAdmin};
@@ -40,9 +40,13 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         await user.save();
         setCookies(res, tokens, COOKIE_CONFIG);
 
+        const { password: _pwd, accessToken: _at, refreshToken: _rt, ...userResponse } = user.toObject();
+
         res.status(201).json({
             message: "User created",
-            user: {...user.toObject(), password: undefined}
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+            user: userResponse
         })
         return;
     } catch (err) {
@@ -77,9 +81,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         await user.save();
         setCookies(res, tokens, COOKIE_CONFIG);
 
+        const { password: _, accessToken: __, refreshToken: ___, ...userResponse } = user.toObject();
+
          res.status(201).json({
             message: "Login successful",
-            user: {...user.toObject(), password: undefined}
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+            user: userResponse
         })
         return;
     } catch (err) {
