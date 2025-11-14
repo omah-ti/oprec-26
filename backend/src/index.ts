@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
-import express, { type Request, type Response, type Application } from 'express';
+import express from 'express';
+import type { Express } from 'express-serve-static-core';
 import helmet from "helmet";
 import mongoSanitize from 'express-mongo-sanitize';
 import cookieParser from 'cookie-parser';
@@ -11,7 +12,7 @@ import penugasanRoutes from '@routes/penugasanRoutes';
 import { connectDB } from '@config/dbconnection';
 dotenv.config();
 
-const app: Application = express();
+const app: Express = express();
 
 // Request size limits
 app.use(express.json({ limit: '10mb' }));
@@ -32,7 +33,7 @@ app.use(mongoSanitize());
 connectDB();
 
 // Health check endpoint
-app.get('/health', (_req: Request, res: Response) => {
+app.get('/health', (_req, res) => {
     res.status(200).json({ 
         status: 'OK', 
         timestamp: new Date().toISOString(),
@@ -47,7 +48,7 @@ app.use('/wawancara', wawancaraRoutes);
 app.use('/penugasan', penugasanRoutes);
 
 // 404 handler
-app.use((req: Request, res: Response) => {
+app.use((req, res) => {
     res.status(404).json({ 
         error: 'Not Found', 
         message: `Route ${req.method} ${req.path} not found`,
