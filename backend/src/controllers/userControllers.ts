@@ -10,7 +10,6 @@ import Divisi from "../models/divisiModels";
 import Mahasiswa from "../models/mahasiswaModels";
 import { IPenugasan } from "../types/IPenugasan";
 import { IUser } from "../types/IUser";
-import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try{
