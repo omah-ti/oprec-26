@@ -8,8 +8,16 @@ export const JWT_CONFIG = {
 };
 
 export const COOKIE_CONFIG: CookieOptions = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
+  path: "/",
+  maxAge: 7 * 24 * 60 * 60 * 1000, 
+};
+
+export const CLEAR_COOKIE_CONFIG: CookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
+  path: "/",
 };

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { generateTokens, verifyToken, setCookies, clearAuthCookies } from "../utils/jwt";
-import { COOKIE_CONFIG, JWT_CONFIG } from "../config/jwtcookies";
+import { COOKIE_CONFIG, JWT_CONFIG, CLEAR_COOKIE_CONFIG } from "../config/jwtcookies";
 import User from '../models/userModels';
 import { IGetRequestWithUser } from "../types/getUserRequest";
 import { IWawancara } from "../types/IWawancara";
@@ -150,12 +150,12 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
+export const logout = async(req: Request, res: Response): Promise<void> => {
   try {
     const { accessToken, refreshToken } = req.cookies;
 
-    res.clearCookie("accessToken", COOKIE_CONFIG);
-    res.clearCookie("refreshToken", COOKIE_CONFIG);
+    res.clearCookie("accessToken", CLEAR_COOKIE_CONFIG);
+    res.clearCookie("refreshToken", CLEAR_COOKIE_CONFIG);
 
     if (accessToken || refreshToken) {
       await User.updateOne(
@@ -164,18 +164,18 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
       );
     }
 
-    res.status(200).json({
-      message: "Logged out successfully",
+    res.status(200).json({ 
+      message: "Logged out successfully"
     });
     return;
   } catch (error) {
     console.error("Logout error:", error);
 
-    res.clearCookie("accessToken", COOKIE_CONFIG);
-    res.clearCookie("refreshToken", COOKIE_CONFIG);
+    res.clearCookie("accessToken", CLEAR_COOKIE_CONFIG);
+    res.clearCookie("refreshToken", CLEAR_COOKIE_CONFIG);
 
-    res.status(200).json({
-      message: "Logged out",
+    res.status(200).json({ 
+      message: "Logged out"
     });
     return;
   }
