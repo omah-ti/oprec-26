@@ -1,4 +1,4 @@
-import {Router} from "express";
+import {Router, type Router as ExpressRouter} from "express";
 import{
     pilihDivisi,
     getAllDivisi,
@@ -11,7 +11,7 @@ import{
 } from "@controllers/penugasanControllers"
 import { authenticateToken } from "@middlewares/auth";
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 router.post('/:slug/choose', authenticateToken, pilihDivisi);
 router.post('/:slug/submit', authenticateToken, submitPenugasan);

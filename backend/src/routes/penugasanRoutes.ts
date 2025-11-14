@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { 
     submitPenugasan, 
     updateTugas, 
@@ -7,7 +7,7 @@ import {
 } from '@controllers/penugasanControllers';
 import { authenticateToken } from '@middlewares/auth';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Check submission period status
 router.get('/status', authenticateToken, checkSubmissionStatus);
