@@ -29,8 +29,15 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(mongoSanitize());
 
-// Database connection
-connectDB();
+// Connect to database on first request (serverless-friendly)
+app.use(async (_req: any, _res: any, next: any) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
 
 // Health check endpoint
 app.get('/health', (_req: any, res: any) => {
