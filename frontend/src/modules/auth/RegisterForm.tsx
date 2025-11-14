@@ -35,13 +35,13 @@ const RegisterForm = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            Accept: "application/json",
           },
           body: JSON.stringify(data),
           credentials: "include",
         },
       );
-        const responseJSON = await response.json();
+      const responseJSON = await response.json();
       if (!response.ok) {
         throw new Error(responseJSON.message);
       }
@@ -51,7 +51,7 @@ const RegisterForm = () => {
     } catch (err: any) {
       setLoading(false);
       setError(err.message || "Failed to register user.");
-    } 
+    }
   };
 
   return (

@@ -18,7 +18,7 @@ import {
 const Navbar = () => {
   return (
     <>
-      <nav className="fixed z-50">
+      <nav className="fixed z-[999]">
         <Container parentClass="py-4 w-screen bg-custom-black/90 backdrop-blur-md">
           <section className="flex w-full items-center justify-between">
             <Title link />
@@ -89,12 +89,22 @@ const NavbarSidebar = ({ className }: { className?: string }) => {
                 <SheetTitle className="text-base font-semibold text-custom-silver">
                   {/* images himakom omahti */}
                   <div className="mb-2 flex gap-2">
-                    <Image src={himakom} alt="" className="h-8 w-auto" priority />
-                    <Image src={omahti} alt="" className="h-8 w-auto" priority />
+                    <Image
+                      src={himakom}
+                      alt=""
+                      className="h-8 w-auto"
+                      priority
+                    />
+                    <Image
+                      src={omahti}
+                      alt=""
+                      className="h-8 w-auto"
+                      priority
+                    />
                   </div>
                   Open Recruitment
                   <br />
-                  Makomti 2024
+                  Makomti 2025
                 </SheetTitle>
               </SheetHeader>
             </div>

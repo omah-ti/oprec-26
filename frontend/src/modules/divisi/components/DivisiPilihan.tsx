@@ -5,13 +5,19 @@ import { Grid, FreeMode } from "swiper/modules"; // Import Grid module
 import "swiper/css";
 import "swiper/css/grid"; // Import Grid CSS
 
-export default function DivisiPilihan({ pilihanDivisi }: { pilihanDivisi: any }) {
+export default function DivisiPilihan({
+  pilihanDivisi,
+}: {
+  pilihanDivisi: any;
+}) {
   // ini temporary, nanti ganti authentication
   const hasChosen = pilihanDivisi.length > 0;
 
   return (
     <>
-      <p className="font-semibold lg:text-lg">Divisi yang Kamu Pilih (Urut berdasarkan prioritas)</p>
+      <p className="font-semibold lg:text-lg">
+        Divisi yang Kamu Pilih (Urut berdasarkan prioritas)
+      </p>
 
       {hasChosen ? (
         <Swiper
@@ -48,7 +54,12 @@ export default function DivisiPilihan({ pilihanDivisi }: { pilihanDivisi: any })
         >
           {pilihanDivisi.map((divisi: any) => (
             <SwiperSlide key={divisi.id}>
-              <DivisiCard id={divisi.urutanPrioritas} title={divisi.divisiId.judul} variant={divisi.divisiId.himakom ? "himakom" : "omahti" } slug={divisi.divisiId.slug} />
+              <DivisiCard
+                id={divisi.urutanPrioritas}
+                title={divisi.divisiId.judul}
+                variant={divisi.divisiId.himakom ? "himakom" : "omahti"}
+                slug={divisi.divisiId.slug}
+              />
             </SwiperSlide>
           ))}
         </Swiper>

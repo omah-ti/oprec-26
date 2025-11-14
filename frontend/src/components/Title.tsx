@@ -11,7 +11,7 @@ const TitleContent = () => (
           Open Recruitment
         </span>
       </AnimatedGradientText>
-      <span>Makomti 2024</span>
+      <span>Makomti 2025</span>
     </div>
   </h1>
 );

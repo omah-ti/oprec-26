@@ -4,7 +4,7 @@ import About from "./About";
 
 const TentangKita = () => {
   return (
-    <Container>
+    <Container className="mt-10">
       <Header>
         Apa yang <span className="text-custom-blue">kamu</span> tahu tentang{" "}
         <span className="text-custom-orange">kita?</span>
