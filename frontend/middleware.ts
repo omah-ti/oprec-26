@@ -75,9 +75,11 @@ export async function middleware(request: NextRequest) {
         );
         if (refreshResponse.ok) {
           const response = NextResponse.redirect(new URL("/divisi", request.url));
-          const setCookieHeader = refreshResponse.headers.get("set-cookie");
-          if (setCookieHeader) {
-            response.headers.set("set-cookie", setCookieHeader);
+          const setCookieHeaders = refreshResponse.headers.getSetCookie();
+          if (setCookieHeaders && setCookieHeaders.length > 0) {
+            setCookieHeaders.forEach(cookie => {
+              response.headers.append("set-cookie", cookie);
+            });
           }
           return response;
         }
@@ -86,8 +88,8 @@ export async function middleware(request: NextRequest) {
             new URL("/", request.url),
           );
           // Delete accessToken and refreshToken cookies
-          response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-          response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+          response.cookies.delete("refreshToken");
+          response.cookies.delete("accessToken");
           return response;
         }
       }
@@ -99,32 +101,50 @@ export async function middleware(request: NextRequest) {
   if (isPublicRoute && accessToken) {
     const validationResponse = await validateToken(PUBLIC_API_URL, accessToken);
     if (validationResponse.ok) {
-      return NextResponse.redirect(new URL("/divisi", request.url)); // Changed from "/"
+      const { user } = await validationResponse.json();
+      
+      // Handle admin users
+      if (user.isAdmin) {
+        return NextResponse.redirect(new URL("/admin", request.url));
+      }
+      
+      // Redirect non-admin users to /divisi
+      return NextResponse.redirect(new URL("/divisi", request.url));
     } else if (validationResponse.status === 401 && refreshToken) {
       const refreshResponse = await refreshTokenValidation(
         PUBLIC_API_URL,
         refreshToken,
       );
       if (refreshResponse.ok) {
-        const response = NextResponse.redirect(request.url);
-        const setCookieHeader = refreshResponse.headers.get("set-cookie");
-        if (setCookieHeader) {
-          response.headers.set("set-cookie", setCookieHeader);
+        const { user } = await refreshResponse.json();
+        
+        // Get new tokens from refresh response
+        const setCookieHeaders = refreshResponse.headers.getSetCookie();
+        const response = user.isAdmin 
+          ? NextResponse.redirect(new URL("/admin", request.url))
+          : NextResponse.redirect(new URL("/divisi", request.url));
+        
+        // Set cookies properly
+        if (setCookieHeaders && setCookieHeaders.length > 0) {
+          setCookieHeaders.forEach(cookie => {
+            response.headers.append("set-cookie", cookie);
+          });
         }
+        
         return response;
       }
       if(!refreshResponse.ok) {
         const response = NextResponse.next();
         // Delete accessToken and refreshToken cookies
-        response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-        response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+        response.cookies.delete("refreshToken");
+        response.cookies.delete("accessToken");
         return response;
       }
     }
     // If validation fails, proceed to login
     const response = NextResponse.next();
-    response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-    response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+    response.cookies.delete("refreshToken");
+    response.cookies.delete("accessToken");
     return response;
   }
   if (isAdminRoute) {
@@ -161,20 +181,22 @@ export async function middleware(request: NextRequest) {
       );
       if (refreshResponse.ok) {
         const response = NextResponse.redirect(request.url);
-        const setCookieHeader = refreshResponse.headers.get("set-cookie");
-        if (setCookieHeader) {
-          response.headers.set("set-cookie", setCookieHeader);
+        const setCookieHeaders = refreshResponse.headers.getSetCookie();
+        if (setCookieHeaders && setCookieHeaders.length > 0) {
+          setCookieHeaders.forEach(cookie => {
+            response.headers.append("set-cookie", cookie);
+          });
         }
         return response;
       }
       const response = NextResponse.redirect(new URL("/", request.url));
-      response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-      response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+      response.cookies.delete("refreshToken");
+      response.cookies.delete("accessToken");
       return response;
     }
     const response = NextResponse.redirect(new URL("/", request.url));
-    response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-    response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+    response.cookies.delete("refreshToken");
+    response.cookies.delete("accessToken");
     return response;
   }
   // Protect other routes
@@ -213,9 +235,11 @@ export async function middleware(request: NextRequest) {
       );
       if (refreshResponse.ok) {
         const response = NextResponse.redirect(request.url);
-        const setCookieHeader = refreshResponse.headers.get("set-cookie");
-        if (setCookieHeader) {
-          response.headers.set("set-cookie", setCookieHeader);
+        const setCookieHeaders = refreshResponse.headers.getSetCookie();
+        if (setCookieHeaders && setCookieHeaders.length > 0) {
+          setCookieHeaders.forEach(cookie => {
+            response.headers.append("set-cookie", cookie);
+          });
         }
         return response;
       }
@@ -223,14 +247,15 @@ export async function middleware(request: NextRequest) {
         const response = NextResponse.redirect(
           new URL("/", request.url),
         );
-        response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-        response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+        response.cookies.delete("refreshToken");
+        response.cookies.delete("accessToken");
+        return response;
       }
     }
     // If both validation and refresh fail, redirect to login
     const response = NextResponse.redirect(new URL("/", request.url));
-    response.cookies.set("refreshToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
-    response.cookies.set("accessToken", "", { maxAge: -1, path: "/", domain: ".makomti.web.id" });
+    response.cookies.delete("refreshToken");
+    response.cookies.delete("accessToken");
     return response;
   }
 
