@@ -150,53 +150,37 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const logout = async(req: Request, res: Response): Promise<void> => {
-    try {
-        const { accessToken, refreshToken } = req.cookies;
+export const logout = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { accessToken, refreshToken } = req.cookies;
 
-        const cookieOptions = {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none' as const,
-            path: '/',
-        };
+    res.clearCookie("accessToken", COOKIE_CONFIG);
+    res.clearCookie("refreshToken", COOKIE_CONFIG);
 
-        res.clearCookie('accessToken', cookieOptions);
-        res.clearCookie('refreshToken', cookieOptions);
-
-        if (accessToken || refreshToken) {
-            await User.updateOne(
-                { $or: [{ accessToken }, { refreshToken }] },
-                { $unset: { accessToken: "", refreshToken: "" } }
-            );
-        }
-
-        res.status(200).json({ 
-            message: "Logged out successfully"
-        });
-        return;
-    } catch (error) {
-        console.error('Logout error:', error);
-        
-        res.clearCookie('accessToken', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none' as const,
-            path: '/',
-        });
-        res.clearCookie('refreshToken', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none' as const,
-            path: '/',
-        });
-        
-        res.status(200).json({ 
-            message: "Logged out"
-        });
-        return;
+    if (accessToken || refreshToken) {
+      await User.updateOne(
+        { $or: [{ accessToken }, { refreshToken }] },
+        { $unset: { accessToken: "", refreshToken: "" } }
+      );
     }
-}
+
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+    return;
+  } catch (error) {
+    console.error("Logout error:", error);
+
+    res.clearCookie("accessToken", COOKIE_CONFIG);
+    res.clearCookie("refreshToken", COOKIE_CONFIG);
+
+    res.status(200).json({
+      message: "Logged out",
+    });
+    return;
+  }
+};
+
 
 export const getWawancara = async(req: IGetRequestWithUser, res: Response): Promise<void> => {
     try {

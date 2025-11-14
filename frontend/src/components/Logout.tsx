@@ -21,56 +21,48 @@ export default function Logout({ className }: { className?: string }) {
   const { toast } = useToast();
   const router = useRouter();
 
-  const handleLogout = async () => {
-    try {
-      setLoading(true);
-      
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+const handleLogout = async () => {
+  try {
+    setLoading(true);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Gagal logout");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+      {
+        method: "POST",
+        credentials: "include", 
       }
+    );
 
-      // Clear cookies dari browser
-      document.cookie = "accessToken=; Max-Age=0; path=/; SameSite=None; Secure";
-      document.cookie = "refreshToken=; Max-Age=0; path=/; SameSite=None; Secure";
+    const data = await res.json();
 
-      setOpen(false);
-
-      toast({
-        title: "Logout Berhasil",
-        description: "Mengarahkan ulang...",
-      });
-
-      setTimeout(() => {
-        router.push("/");
-        router.refresh();
-      }, 500);
-
-    } catch (error) {
-      console.error("Logout error:", error);
-      
-      // Tetap clear cookies meski error
-      document.cookie = "accessToken=; Max-Age=0; path=/; SameSite=None; Secure";
-      document.cookie = "refreshToken=; Max-Age=0; path=/; SameSite=None; Secure";
-      
-      toast({
-        title: "Terjadi kesalahan",
-        description: "Silakan coba lagi",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(data?.message || "Gagal logout");
     }
-  };
+
+    setOpen(false);
+
+    toast({
+      title: "Logout Berhasil",
+      description: "Mengarahkan ulang...",
+    });
+
+    setTimeout(() => {
+      router.push("/");
+      router.refresh();
+    }, 500);
+  } catch (error) {
+    console.error("Logout error:", error);
+
+    toast({
+      title: "Terjadi kesalahan",
+      description: "Silakan coba lagi",
+      variant: "destructive",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
