@@ -32,6 +32,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Complete a backend task.',
           toolsPenugasan: 'Node.js, Express',
           linkPenugasan: 'https://example.com/backend_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -54,6 +55,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Build a frontend interface.',
           toolsPenugasan: 'React, Vue.js',
           linkPenugasan: 'https://example.com/frontend_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -76,6 +78,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Design a user-friendly interface.',
           toolsPenugasan: 'Figma, Adobe XD',
           linkPenugasan: 'https://example.com/uiux_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -98,6 +101,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a data analysis project.',
           toolsPenugasan: 'Python, TensorFlow',
           linkPenugasan: 'https://example.com/dsai_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -120,6 +124,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Solve a programming challenge.',
           toolsPenugasan: 'C++, Java',
           linkPenugasan: 'https://example.com/cp_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -142,6 +147,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a mobile app.',
           toolsPenugasan: 'Flutter, React Native',
           linkPenugasan: 'https://example.com/mobapps_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -164,6 +170,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a game prototype.',
           toolsPenugasan: 'Unity, Unreal Engine',
           linkPenugasan: 'https://example.com/gamedev_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -186,6 +193,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a game prototype.',
           toolsPenugasan: 'Unity, Unreal Engine',
           linkPenugasan: 'https://example.com/gamedevhima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -208,6 +216,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Complete a backendhima task.',
           toolsPenugasan: 'Node.js, Express',
           linkPenugasan: 'https://example.com/backendhima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -230,6 +239,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Build a frontendhima interface.',
           toolsPenugasan: 'React, Vue.js',
           linkPenugasan: 'https://example.com/frontendhima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -252,6 +262,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Design a user-friendly interface.',
           toolsPenugasan: 'Figma, Adobe XD',
           linkPenugasan: 'https://example.com/uiuxhima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -274,6 +285,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a data analysis project.',
           toolsPenugasan: 'Python, TensorFlow',
           linkPenugasan: 'https://example.com/dsaihima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -296,6 +308,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Solve a programming challenge.',
           toolsPenugasan: 'C++, Java',
           linkPenugasan: 'https://example.com/cphima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -318,6 +331,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a mobile app.',
           toolsPenugasan: 'Flutter, React Native',
           linkPenugasan: 'https://example.com/mobappshima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -340,6 +354,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a game prototype.',
           toolsPenugasan: 'Unity, Unreal Engine',
           linkPenugasan: 'https://example.com/gamedevhima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
       {
@@ -362,6 +377,7 @@ const seedDivisi = async () => {
           deskripsiPenugasan: 'Create a game prototype.',
           toolsPenugasan: 'Unity, Unreal Engine',
           linkPenugasan: 'https://example.com/gamedevhima_task',
+          deadline: new Date(2025, 10, 21, 12, 0), // November 21, 2025, 12:00 PM
         },
       },
     ];
@@ -388,7 +404,9 @@ const divisiSlotsOti = {
   gamedev: { sisaSlot: 1, lokasi: 'IUP Room' },
   dsai: { sisaSlot: 1, lokasi: 'IUP Room' },
 }; console.log(divisiSlotsOti);
-for (let day = 18; day <= 23; day++) {
+
+// HIMAKOM Interview: 23-24 November 2025 (Sunday - Monday)
+for (let day = 23; day <= 24; day++) {
   const sesi = [];
   const startHour = 18;
   const startMinute = 20;
@@ -396,7 +414,35 @@ for (let day = 18; day <= 23; day++) {
 
   for (let h = startHour, m = startMinute; h < 20 || (h === 20 && m <= 30); ) {
     sesi.push({
-      jam: new Date(2024, 9, day, h, m),
+      jam: new Date(2025, 10, day, h, m), // November 2025 (month index 10)
+      dipilihOleh: [],
+      slotDivisi: JSON.parse(JSON.stringify(divisiSlotsHima)),
+    });
+
+    m += intervalMinutes;
+    if (m >= 60) {
+      h += 1;
+      m -= 60;
+    }
+  }
+
+  wawancaraData.push({
+    tanggal: new Date(2025, 10, day), // November 2025
+    himakom: true,
+    sesi,
+  });
+}
+
+// OTI Interview: 25-28 November 2025 (Tuesday - Friday)
+for (let day = 25; day <= 28; day++) {
+  const sesi = [];
+  const startHour = 18;
+  const startMinute = 20;
+  const intervalMinutes = 35;
+
+  for (let h = startHour, m = startMinute; h < 20 || (h === 20 && m <= 30); ) {
+    sesi.push({
+      jam: new Date(2025, 10, day, h, m), // November 2025 (month index 10)
       dipilihOleh: [],
       slotDivisi: JSON.parse(JSON.stringify(divisiSlotsOti)),
     });
@@ -409,7 +455,7 @@ for (let day = 18; day <= 23; day++) {
   }
 
   wawancaraData.push({
-    tanggal: new Date(2024, 9, day),
+    tanggal: new Date(2025, 10, day), // November 2025
     himakom: false,
     sesi,
   });
@@ -418,11 +464,20 @@ for (let day = 18; day <= 23; day++) {
 console.log(wawancaraData);
     // Insert the data into the Divisi collection
   console.log(divisiData);
+    
+    // Insert divisi data
+    for(const divisi of divisiData){
+      const divisiBaru = new Divisi(divisi);
+      await divisiBaru.save();
+    }
+    console.log('Divisi data successfully seeded!');
+    
+    // Insert wawancara data
     for(const wawancara of wawancaraData){
       const wawancaraBaru = new Wawancara(wawancara);
       await wawancaraBaru.save();
     }
-    console.log('Data successfully seeded!');
+    console.log('Wawancara data successfully seeded!');
     
     // Disconnect from MongoDB
     await mongoose.disconnect();

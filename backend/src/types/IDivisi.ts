@@ -22,4 +22,5 @@ export interface IPenugasan extends Document{
     deskripsiPenugasan: string,
     toolsPenugasan: string,
     linkPenugasan: string,
+    deadline?: Date,
 }
