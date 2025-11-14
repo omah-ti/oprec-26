@@ -3,10 +3,10 @@ import {
     pilihWaktuWawancaraOti,
     pilihWaktuWawancaraHima,
     getAllWawancara
-} from '@controllers/wawancaraControllers';
-import { authenticateToken } from '@middlewares/auth';
-import { sudahMemilihOti, sudahMemilihHima } from '@middlewares/sudahMemilih';
-import { sudahMengumpulkanOti, sudahMengumpulkanHima } from '@middlewares/sudahMengumpulkan';
+} from '../controllers/wawancaraControllers';
+import { authenticateToken } from '../middlewares/auth';
+import { sudahMemilihOti, sudahMemilihHima } from '../middlewares/sudahMemilih';
+import { sudahMengumpulkanOti, sudahMengumpulkanHima } from '../middlewares/sudahMengumpulkan';
 
 const router: ExpressRouter = Router();
 

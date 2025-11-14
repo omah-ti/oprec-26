@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { JWT_CONFIG } from "@config/jwtcookies";
+import { JWT_CONFIG } from "../config/jwtcookies";
 import { TokenPayload, AuthTokens } from "../types/tokens";
 import { Response } from "express";
 export const generateTokens = (payload: TokenPayload): AuthTokens => {

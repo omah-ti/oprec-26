@@ -4,11 +4,11 @@ import express from 'express';
 import helmet from "helmet";
 import mongoSanitize from 'express-mongo-sanitize';
 import cookieParser from 'cookie-parser';
-import userRoutes from '@routes/userRoutes';
-import divisiRoutes from '@routes/divisiRoutes';
-import wawancaraRoutes from '@routes/wawancaraRoutes';
-import penugasanRoutes from '@routes/penugasanRoutes';
-import { connectDB } from '@config/dbconnection';
+import userRoutes from './routes/userRoutes';
+import divisiRoutes from './routes/divisiRoutes';
+import wawancaraRoutes from './routes/wawancaraRoutes';
+import penugasanRoutes from './routes/penugasanRoutes';
+import { connectDB } from './config/dbconnection';
 dotenv.config();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

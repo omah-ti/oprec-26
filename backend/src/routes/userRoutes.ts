@@ -12,8 +12,8 @@ import{
     getAllUsersAndTheirFilteredTugas,
     updateUserDivisionAcceptance,
     getUserDiterimaDimana
-} from "@/controllers/userControllers";
-import { authenticateToken } from "@middlewares/auth";
+} from "../controllers/userControllers";
+import { authenticateToken } from "../middlewares/auth";
 
 const router: ExpressRouter = Router();
 

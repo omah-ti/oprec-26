@@ -1,5 +1,5 @@
 import mongoose, {Schema} from 'mongoose';
-import { IPenugasan } from '@/types/IPenugasan';
+import { IPenugasan } from '../types/IPenugasan';
 
 const penugasanSchema: Schema<IPenugasan> = new Schema({
     link: {

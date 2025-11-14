@@ -1,11 +1,11 @@
-import User from "@models/userModels";
-import Divisi from "@/models/divisiModels";
+import User from "../models/userModels";
+import Divisi from "../models/divisiModels";
 import { Request, Response } from "express";
-import { IGetRequestWithUser } from "@/types/getUserRequest";
-import { IDivisi } from "@/types/IDivisi";
-import { IUser } from "@/types/IUser";
-import { generateTokens, setCookies } from "@/utils/jwt";
-import { COOKIE_CONFIG } from "@/config/jwtcookies";
+import { IGetRequestWithUser } from "../types/getUserRequest";
+import { IDivisi } from "../types/IDivisi";
+import { IUser } from "../types/IUser";
+import { generateTokens, setCookies } from "../utils/jwt";
+import { COOKIE_CONFIG } from "../config/jwtcookies";
 
 const MAX_DIVISIONS_PER_TYPE = 2;
 

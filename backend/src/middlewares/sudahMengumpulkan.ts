@@ -1,8 +1,8 @@
-import { IGetRequestWithUser } from "@/types/getUserRequest";
+import { IGetRequestWithUser } from "../types/getUserRequest";
 import { Response, NextFunction } from "express";
-import User from "@/models/userModels";
-import Divisi from "@/models/divisiModels";
-import Penugasan from "@/models/penugasanModels";
+import User from "../models/userModels";
+import Divisi from "../models/divisiModels";
+import Penugasan from "../models/penugasanModels";
 
 export const sudahMengumpulkanOti = async(
     req: IGetRequestWithUser, 

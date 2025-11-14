@@ -3,13 +3,13 @@ import{
     pilihDivisi,
     getAllDivisi,
     getOneDivisi
-} from "@/controllers/divisiControllers";
+} from "../controllers/divisiControllers";
 import{
     submitPenugasan,
     updateTugas,
     existingSubmission
-} from "@controllers/penugasanControllers"
-import { authenticateToken } from "@middlewares/auth";
+} from "../controllers/penugasanControllers"
+import { authenticateToken } from "../middlewares/auth";
 
 const router: ExpressRouter = Router();
 

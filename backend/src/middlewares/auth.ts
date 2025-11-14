@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
-import { verifyToken } from "@utils/jwt";
-import { JWT_CONFIG } from "@config/jwtcookies";
-import { IGetRequestWithUser } from "@/types/getUserRequest";
-import User from "@/models/userModels";
+import { verifyToken } from "../utils/jwt";
+import { JWT_CONFIG } from "../config/jwtcookies";
+import { IGetRequestWithUser } from "../types/getUserRequest";
+import User from "../models/userModels";
 
 export const authenticateToken = async (
   req: IGetRequestWithUser,

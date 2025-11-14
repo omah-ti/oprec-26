@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IDivisi, IProker, IPenugasan } from '@/types/IDivisi';
+import { IDivisi, IProker, IPenugasan } from '../types/IDivisi';
 
 const prokerSchema: Schema<IProker> = new Schema({
     url: String,

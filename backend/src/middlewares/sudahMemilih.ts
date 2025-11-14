@@ -1,6 +1,6 @@
-import { IGetRequestWithUser } from "@/types/getUserRequest";
+import { IGetRequestWithUser } from "../types/getUserRequest";
 import { Response, NextFunction } from "express";
-import User from "@/models/userModels";
+import User from "../models/userModels";
 export const sudahMemilihOti =  async(req: IGetRequestWithUser, res: Response, next: NextFunction):Promise<void> => {
     try {
         const userId = req.user?.userId;

@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { generateTokens, verifyToken, setCookies } from "@utils/jwt";
-import { COOKIE_CONFIG, JWT_CONFIG } from "@config/jwtcookies";
-import User from '@/models/userModels';
-import { IGetRequestWithUser } from "@/types/getUserRequest";
-import { IWawancara } from "@/types/IWawancara";
+import { generateTokens, verifyToken, setCookies } from "../utils/jwt";
+import { COOKIE_CONFIG, JWT_CONFIG } from "../config/jwtcookies";
+import User from '../models/userModels';
+import { IGetRequestWithUser } from "../types/getUserRequest";
+import { IWawancara } from "../types/IWawancara";
 import { randomBytes } from "crypto";
-import { resetEmail } from "@utils/resetEmail";
-import Divisi from "@/models/divisiModels";
-import Mahasiswa from "@/models/mahasiswaModels";
-import { IPenugasan } from "@/types/IPenugasan";
-import { IUser } from "@/types/IUser";
+import { resetEmail } from "../utils/resetEmail";
+import Divisi from "../models/divisiModels";
+import Mahasiswa from "../models/mahasiswaModels";
+import { IPenugasan } from "../types/IPenugasan";
+import { IUser } from "../types/IUser";
 export const register = async (req: Request, res: Response): Promise<void> => {
     try{
         const {email, username, password, NIM, isAdmin=false} = req.body;

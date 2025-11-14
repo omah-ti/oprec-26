@@ -1,5 +1,5 @@
 import mongoose, {Schema} from 'mongoose';
-import { ISesi, IWawancara, ISlotDivisiPerSesi } from '@/types/IWawancara';
+import { ISesi, IWawancara, ISlotDivisiPerSesi } from '../types/IWawancara';
 
 const slotDivisiPerSesiSchema: Schema<ISlotDivisiPerSesi> = new Schema({
     backend: {

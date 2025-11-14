@@ -1,8 +1,8 @@
-import Penugasan from "@/models/penugasanModels";
-import User from "@/models/userModels";
-import Divisi from "@/models/divisiModels";
+import Penugasan from "../models/penugasanModels";
+import User from "../models/userModels";
+import Divisi from "../models/divisiModels";
 import { Response } from "express";
-import { IGetRequestWithUser } from "@/types/getUserRequest";
+import { IGetRequestWithUser } from "../types/getUserRequest";
 
 // Pengumpulan penugasan dibuka: 15 November 2025, 12:00 PM
 // Pengumpulan penugasan ditutup: 21 November 2025, 12:00 PM

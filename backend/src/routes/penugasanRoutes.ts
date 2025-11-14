@@ -4,8 +4,8 @@ import {
     updateTugas, 
     existingSubmission,
     checkSubmissionStatus
-} from '@controllers/penugasanControllers';
-import { authenticateToken } from '@middlewares/auth';
+} from '../controllers/penugasanControllers';
+import { authenticateToken } from '../middlewares/auth';
 
 const router: ExpressRouter = Router();
 

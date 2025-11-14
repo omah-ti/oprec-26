@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { IGetRequestWithUser } from "@/types/getUserRequest";
-import { IDivisi } from "@/types/IDivisi";
-import { IDivisiSlot, IWawancara } from "@/types/IWawancara";
-import Wawancara from "@/models/wawancaraModels";
-import User from "@/models/userModels";
+import { IGetRequestWithUser } from "../types/getUserRequest";
+import { IDivisi } from "../types/IDivisi";
+import { IDivisiSlot, IWawancara } from "../types/IWawancara";
+import Wawancara from "../models/wawancaraModels";
+import User from "../models/userModels";
 
 interface DIVISISLOT{
     [key: string]: IDivisiSlot;
