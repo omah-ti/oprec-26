@@ -22,3 +22,15 @@ export const setCookies = (res: Response, tokens: {accessToken: string, refreshT
     res.cookie('accessToken', tokens.accessToken, COOKIE_CONFIG);
     res.cookie('refreshToken', tokens.refreshToken, COOKIE_CONFIG);
 }
+
+export const clearAuthCookies = (res: Response): void => {
+    const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none' as const,
+        path: '/'
+    };
+    
+    res.clearCookie('accessToken', cookieOptions);
+    res.clearCookie('refreshToken', cookieOptions);
+};

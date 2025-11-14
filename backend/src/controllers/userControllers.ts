@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { generateTokens, verifyToken, setCookies } from "../utils/jwt";
+import { generateTokens, verifyToken, setCookies, clearAuthCookies } from "../utils/jwt";
 import { COOKIE_CONFIG, JWT_CONFIG } from "../config/jwtcookies";
 import User from '../models/userModels';
 import { IGetRequestWithUser } from "../types/getUserRequest";
@@ -151,19 +151,27 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const logout = async(req: Request, res: Response): Promise<void> => {
-    const accessToken = req.cookies['accessToken'];
-    const user = await User.findOne({accessToken});
-    if(!user){
-        res.status(401).json({message: "Invalid access token"});
+    try {
+        const accessToken = req.cookies['accessToken'];
+
+        clearAuthCookies(res);
+
+        if (accessToken) {
+            const user = await User.findOne({ accessToken });
+            if (user) {
+                user.accessToken = undefined;
+                user.refreshToken = undefined;
+                await user.save();
+            }
+        }
+
+        res.status(200).json({ message: "Logged out successfully" });
+        return;
+    } catch (error) {
+        clearAuthCookies(res);
+        res.status(200).json({ message: "Logged out" });
         return;
     }
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
-    user.accessToken = undefined;
-    user.refreshToken = undefined;
-    await user.save();
-    res.status(200).json({message: "Logged out"});
-    return;
 }
 
 export const getWawancara = async(req: IGetRequestWithUser, res: Response): Promise<void> => {
@@ -266,11 +274,12 @@ export const resetPassword = async (req: Request, res: Response) => {
             res.status(400).json({ message: 'Invalid or expired token' });
             return;
         }
-        res.clearCookie('accessToken');
-        res.clearCookie('refreshToken');
+        
+        clearAuthCookies(res);
+        
         user.accessToken = undefined;
         user.refreshToken = undefined;
-        user.password = newPassword; // Hash password before saving
+        user.password = newPassword;
         user.resetToken = undefined;
         user.resetTokenExpiration = undefined;
         await user.save();
