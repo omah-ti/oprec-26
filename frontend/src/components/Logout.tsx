@@ -25,19 +25,15 @@ const handleLogout = async () => {
   try {
     setLoading(true);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
-      {
-        method: "POST",
-        credentials: "include", 
-      }
-    );
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data?.message || "Gagal logout");
-    }
+    await fetch("/api/auth/clear-frontend-cookies", {
+      method: "POST",
+      credentials: "include",
+    });
 
     setOpen(false);
 
@@ -62,6 +58,7 @@ const handleLogout = async () => {
     setLoading(false);
   }
 };
+
 
 
   return (
