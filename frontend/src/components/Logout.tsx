@@ -21,85 +21,53 @@ export default function Logout({ className }: { className?: string }) {
   const { toast } = useToast();
   const router = useRouter();
 
-  const forceClearCookies = () => {
-    // Force clear cookies di browser dengan berbagai variasi
-    const cookieNames = ['accessToken', 'refreshToken'];
-    const domains = ['', '.oprec-makomti.vercel.app', '.vercel.app'];
-    const paths = ['/', '/admin', '/divisi'];
-    
-    cookieNames.forEach(cookieName => {
-      domains.forEach(domain => {
-        paths.forEach(path => {
-          // Multiple clear attempts
-          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; ${domain ? `domain=${domain};` : ''} SameSite=None; Secure`;
-          document.cookie = `${cookieName}=; Max-Age=-1; path=${path}; ${domain ? `domain=${domain};` : ''} SameSite=None; Secure`;
-          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; ${domain ? `domain=${domain};` : ''}`;
-        });
-      });
-    });
-    
-    console.log('Cookies force cleared from browser');
-  };
-
   const handleLogout = async () => {
     try {
       setLoading(true);
       
-      // Call backend logout
-      const response = await fetch(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
         {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
+        }
       );
 
-      console.log('Logout response status:', response.status);
+      const data = await res.json();
 
-      if (!response.ok) {
-        throw new Error("Failed to log out");
+      if (!res.ok) {
+        throw new Error(data?.message || "Gagal logout");
       }
 
-      // Force clear cookies regardless of response
-      forceClearCookies();
+      // Clear cookies dari browser
+      document.cookie = "accessToken=; Max-Age=0; path=/; SameSite=None; Secure";
+      document.cookie = "refreshToken=; Max-Age=0; path=/; SameSite=None; Secure";
 
-      // Close dialog
       setOpen(false);
 
-      // Show success toast
       toast({
         title: "Logout Berhasil",
         description: "Mengarahkan ulang...",
       });
 
-      // Wait for toast to show
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Use router.push for navigation
-      router.push("/");
-      router.refresh(); // Force refresh to clear cache and re-run middleware
-      
-    } catch (error) {
-      console.error("Logout error:", error);
-      
-      // Still force clear cookies even on error
-      forceClearCookies();
-      
-      // Show different toast for error case
-      toast({
-        title: "Logout Berhasil", 
-        description: "Mengarahkan ulang...",
-      });
-      
-      // Still try to redirect on error
       setTimeout(() => {
         router.push("/");
         router.refresh();
       }, 500);
+
+    } catch (error) {
+      console.error("Logout error:", error);
       
+      // Tetap clear cookies meski error
+      document.cookie = "accessToken=; Max-Age=0; path=/; SameSite=None; Secure";
+      document.cookie = "refreshToken=; Max-Age=0; path=/; SameSite=None; Secure";
+      
+      toast({
+        title: "Terjadi kesalahan",
+        description: "Silakan coba lagi",
+        variant: "destructive",
+      });
+    } finally {
       setLoading(false);
     }
   };

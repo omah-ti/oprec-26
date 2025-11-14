@@ -152,81 +152,47 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
 
 export const logout = async(req: Request, res: Response): Promise<void> => {
     try {
-        console.log('=== LOGOUT REQUEST ===');
-        console.log('Cookies received:', req.cookies);
-        
-        const accessToken = req.cookies['accessToken'];
-        const refreshToken = req.cookies['refreshToken'];
+        const { accessToken, refreshToken } = req.cookies;
 
-        console.log('Access Token:', accessToken ? 'exists' : 'missing');
-        console.log('Refresh Token:', refreshToken ? 'exists' : 'missing');
-
-        const cookieVariations = [
-            {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none' as const,
-                path: '/',
-            },
-            {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none' as const,
-                path: '/',
-                expires: new Date(0)
-            },
-            {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none' as const,
-                path: '/',
-                maxAge: -1
-            }
-        ];
-
-        cookieVariations.forEach(options => {
-            res.clearCookie('accessToken', options);
-            res.clearCookie('refreshToken', options);
-        });
-
-        console.log('Cookies cleared from response with multiple variations');
-
-        if (accessToken) {
-            const user = await User.findOne({ accessToken });
-            if (user) {
-                console.log('User found, clearing tokens from DB');
-                user.accessToken = undefined;
-                user.refreshToken = undefined;
-                await user.save();
-                console.log('Tokens cleared from DB');
-            } else {
-                console.log('User not found with accessToken');
-            }
-        }
-
-        res.status(200).json({ 
-            message: "Logged out successfully",
-            cleared: true,
-            timestamp: new Date().toISOString()
-        });
-        return;
-    } catch (error) {
-        console.error('Logout error:', error);
-        
         const cookieOptions = {
             httpOnly: true,
             secure: true,
             sameSite: 'none' as const,
             path: '/',
-            maxAge: -1
         };
-        
+
         res.clearCookie('accessToken', cookieOptions);
         res.clearCookie('refreshToken', cookieOptions);
+
+        if (accessToken || refreshToken) {
+            await User.updateOne(
+                { $or: [{ accessToken }, { refreshToken }] },
+                { $unset: { accessToken: "", refreshToken: "" } }
+            );
+        }
+
+        res.status(200).json({ 
+            message: "Logged out successfully"
+        });
+        return;
+    } catch (error) {
+        console.error('Logout error:', error);
+        
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none' as const,
+            path: '/',
+        });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none' as const,
+            path: '/',
+        });
         
         res.status(200).json({ 
-            message: "Logged out",
-            cleared: true 
+            message: "Logged out"
         });
         return;
     }
