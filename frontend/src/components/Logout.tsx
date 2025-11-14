@@ -3,7 +3,6 @@ import { LoaderCircle, LogOut as LogOutIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -18,17 +17,22 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function Logout({ className }: { className?: string }) {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
       setLoading(true);
+      
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
         {
           method: "POST",
           credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
       );
 
@@ -36,24 +40,31 @@ export default function Logout({ className }: { className?: string }) {
         throw new Error("Failed to log out");
       }
 
-      router.push("/");
-      router.refresh();
+      setOpen(false);
+
       toast({
         title: "Logout Berhasil",
         description: "Anda telah keluar dari akun Anda.",
       });
+
+      router.push("/");
+      router.refresh();
+      
     } catch (error) {
+      console.error("Logout error:", error);
+      
       toast({
         variant: "destructive",
         title: "Logout Gagal",
         description: "Gagal keluar dari akun. Silakan coba lagi",
       });
+      
       setLoading(false);
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger
         className={`flex aspect-square shrink-0 items-center justify-center gap-4 rounded-md bg-custom-gray px-2 py-3 text-white hover:bg-custom-gray/90 lg:aspect-auto ${className}`}
       >
@@ -78,7 +89,8 @@ export default function Logout({ className }: { className?: string }) {
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
-                <LoaderCircle className="animate-spin" size={25} />
+                <LoaderCircle className="animate-spin" size={20} />
+                <span>Logging out...</span>
               </div>
             ) : (
               "Log Out"
