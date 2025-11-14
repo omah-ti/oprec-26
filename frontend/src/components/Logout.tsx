@@ -21,10 +21,31 @@ export default function Logout({ className }: { className?: string }) {
   const { toast } = useToast();
   const router = useRouter();
 
+  const forceClearCookies = () => {
+    // Force clear cookies di browser dengan berbagai variasi
+    const cookieNames = ['accessToken', 'refreshToken'];
+    const domains = ['', '.oprec-makomti.vercel.app', '.vercel.app'];
+    const paths = ['/', '/admin', '/divisi'];
+    
+    cookieNames.forEach(cookieName => {
+      domains.forEach(domain => {
+        paths.forEach(path => {
+          // Multiple clear attempts
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; ${domain ? `domain=${domain};` : ''} SameSite=None; Secure`;
+          document.cookie = `${cookieName}=; Max-Age=-1; path=${path}; ${domain ? `domain=${domain};` : ''} SameSite=None; Secure`;
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; ${domain ? `domain=${domain};` : ''}`;
+        });
+      });
+    });
+    
+    console.log('Cookies force cleared from browser');
+  };
+
   const handleLogout = async () => {
     try {
       setLoading(true);
       
+      // Call backend logout
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
         {
@@ -36,28 +57,48 @@ export default function Logout({ className }: { className?: string }) {
         },
       );
 
+      console.log('Logout response status:', response.status);
+
       if (!response.ok) {
         throw new Error("Failed to log out");
       }
 
+      // Force clear cookies regardless of response
+      forceClearCookies();
+
+      // Close dialog
       setOpen(false);
 
+      // Show success toast
       toast({
         title: "Logout Berhasil",
-        description: "Anda telah keluar dari akun Anda.",
+        description: "Mengarahkan ulang...",
       });
 
+      // Wait for toast to show
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Use router.push for navigation
       router.push("/");
-      router.refresh();
+      router.refresh(); // Force refresh to clear cache and re-run middleware
       
     } catch (error) {
       console.error("Logout error:", error);
       
+      // Still force clear cookies even on error
+      forceClearCookies();
+      
+      // Show different toast for error case
       toast({
-        variant: "destructive",
-        title: "Logout Gagal",
-        description: "Gagal keluar dari akun. Silakan coba lagi",
+        title: "Logout Berhasil", 
+        description: "Mengarahkan ulang...",
       });
+      
+      // Still try to redirect on error
+      setTimeout(() => {
+        router.push("/");
+        router.refresh();
+      }, 500);
       
       setLoading(false);
     }

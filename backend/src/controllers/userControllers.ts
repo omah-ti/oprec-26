@@ -161,17 +161,35 @@ export const logout = async(req: Request, res: Response): Promise<void> => {
         console.log('Access Token:', accessToken ? 'exists' : 'missing');
         console.log('Refresh Token:', refreshToken ? 'exists' : 'missing');
 
-        const cookieOptions = {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none' as const,
-            path: '/',
-        };
+        const cookieVariations = [
+            {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none' as const,
+                path: '/',
+            },
+            {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none' as const,
+                path: '/',
+                expires: new Date(0)
+            },
+            {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none' as const,
+                path: '/',
+                maxAge: -1
+            }
+        ];
 
-        res.clearCookie('accessToken', cookieOptions);
-        res.clearCookie('refreshToken', cookieOptions);
-        
-        console.log('Cookies cleared from response');
+        cookieVariations.forEach(options => {
+            res.clearCookie('accessToken', options);
+            res.clearCookie('refreshToken', options);
+        });
+
+        console.log('Cookies cleared from response with multiple variations');
 
         if (accessToken) {
             const user = await User.findOne({ accessToken });
@@ -188,7 +206,8 @@ export const logout = async(req: Request, res: Response): Promise<void> => {
 
         res.status(200).json({ 
             message: "Logged out successfully",
-            cleared: true 
+            cleared: true,
+            timestamp: new Date().toISOString()
         });
         return;
     } catch (error) {
@@ -199,6 +218,7 @@ export const logout = async(req: Request, res: Response): Promise<void> => {
             secure: true,
             sameSite: 'none' as const,
             path: '/',
+            maxAge: -1
         };
         
         res.clearCookie('accessToken', cookieOptions);
