@@ -1,4 +1,4 @@
-import User from "../models/userModels";
+import User from "../models//userModels";
 import Divisi from "../models/divisiModels";
 import { Request, Response } from "express";
 import { IGetRequestWithUser } from "../types/getUserRequest";

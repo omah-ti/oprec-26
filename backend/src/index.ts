@@ -11,7 +11,7 @@ import penugasanRoutes from './routes/penugasanRoutes';
 import { connectDB } from './config/dbconnection';
 dotenv.config();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ./types/cript-eslint/no-explicit-any
 const app: any = express();
 
 // Request size limits
