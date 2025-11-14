@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
-import express, { Express, Request, Response } from 'express';
+import express, { type Request, type Response, type Application } from 'express';
 import helmet from "helmet";
 import mongoSanitize from 'express-mongo-sanitize';
 import cookieParser from 'cookie-parser';
@@ -11,7 +11,7 @@ import penugasanRoutes from '@routes/penugasanRoutes';
 import { connectDB } from '@config/dbconnection';
 dotenv.config();
 
-const app: Express = express();
+const app: Application = express();
 
 // Request size limits
 app.use(express.json({ limit: '10mb' }));
