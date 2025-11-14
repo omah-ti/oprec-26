@@ -1,9 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Info, LoaderCircle, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { loginAction } from "./actions";
 
 interface FormData {
   email: string;
@@ -11,9 +11,8 @@ interface FormData {
 }
 
 const LoginForm = () => {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
   const [hide, setHide] = useState<boolean>(true);
   const [resetMessage, setResetMessage] = useState<string | null>(null);
   const [loadingReset, setLoadingReset] = useState<boolean>(false);
@@ -21,30 +20,20 @@ const LoginForm = () => {
   const email = watch("email");
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      setError(null);
-      setLoading(true);
+    setError(null);
+    
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.append('email', data.email);
+      formData.append('password', data.password);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" , "Accept": "application/json"},
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
-
-      if (!response.ok) throw new Error("Incorrect email or password.");
-
-      const user = await response.json();
-
-      if (user.isAdmin) {
-        router.push("/admin");
-      } else {
-        router.push("/divisi");
+      const result = await loginAction(formData);
+      
+      if (result?.error) {
+        setError(result.error);
       }
-    } catch (err: any) {
-      setLoading(false);
-      setError(err.message || "Failed to log in");
-    }
+      // If successful, loginAction will redirect automatically
+    });
   };
 
   const handlePasswordReset = async () => {
@@ -85,6 +74,7 @@ const LoginForm = () => {
             {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
             className={`w-full rounded-lg border border-white/10 bg-black/10 px-4 py-2 text-custom-silver placeholder-custom-gray-light focus:border-custom-blue focus:outline-none focus:ring-1 focus:ring-custom-blue ${errors.email && "border border-red-500"}`}
             autoFocus
+            disabled={isPending}
           />
           {errors.email && (
             <p className="flex gap-1.5 text-sm text-red-500">
@@ -99,19 +89,20 @@ const LoginForm = () => {
               Password
             </label>
             {loadingReset ? (
-            <div className="flex items-center justify-center gap-2">
-              <LoaderCircle className="animate-spin" size={20} />
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={handlePasswordReset}
-              tabIndex={-1}
-              className="text-sm text-blue-500 hover:underline"
-            >
-              Forgot password?
-            </button>
-          )}
+              <div className="flex items-center justify-center gap-2">
+                <LoaderCircle className="animate-spin" size={20} />
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handlePasswordReset}
+                tabIndex={-1}
+                className="text-sm text-blue-500 hover:underline"
+                disabled={isPending}
+              >
+                Forgot password?
+              </button>
+            )}
           </div>
 
           <div className="relative">
@@ -120,9 +111,13 @@ const LoginForm = () => {
               {...register("password", { required: true })}
               autoComplete="off"
               className={`w-full rounded-lg border border-white/10 bg-black/10 px-4 py-2 text-white placeholder-custom-gray-light focus:border-custom-blue focus:outline-none focus:ring-1 focus:ring-custom-blue ${errors.password && "border-red-500"}`}
+              disabled={isPending}
             />
             <span className="absolute right-1 top-1/2 -translate-y-1/2">
-              <div className="cursor-pointer p-2 text-custom-silver" onClick={() => setHide(!hide)}>
+              <div 
+                className="cursor-pointer p-2 text-custom-silver" 
+                onClick={() => setHide(!hide)}
+              >
                 {hide ? <EyeOff size={18} /> : <Eye size={18} />}
               </div>
             </span>
@@ -136,12 +131,12 @@ const LoginForm = () => {
 
         <Button
           type="submit"
-          variant={`white`}
-          size={`lg`}
+          variant="white"
+          size="lg"
           className="mt-2 w-full text-base"
-          disabled={loading}
+          disabled={isPending}
         >
-          {loading ? (
+          {isPending ? (
             <div className="flex items-center justify-center gap-2">
               <LoaderCircle className="animate-spin" size={20} />
             </div>

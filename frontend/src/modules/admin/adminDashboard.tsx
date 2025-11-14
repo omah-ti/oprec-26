@@ -8,7 +8,10 @@ import { Logos } from "@/utils/types";
 import { User } from "lucide-react";
 
 const AdminDashboard = ({ allUsers, admin }: { allUsers: any; admin: any }) => {
-  allUsers = allUsers.filter(
+  // Ensure allUsers is an array
+  const users = Array.isArray(allUsers) ? allUsers : [];
+  
+  const filteredUsers = users.filter(
     (user: any) =>
       !user.email.includes("omahti.oke") &&
       !user.email.includes("himakom.mantap") &&
@@ -47,7 +50,7 @@ const AdminDashboard = ({ allUsers, admin }: { allUsers: any; admin: any }) => {
             Pendaftar
           </h1>
           <NumberTicker
-            value={allUsers.length}
+            value={filteredUsers.length}
             className="font-bold text-custom-silver"
           />
 
@@ -60,9 +63,9 @@ const AdminDashboard = ({ allUsers, admin }: { allUsers: any; admin: any }) => {
           Informasi Pendaftar
         </div>
         {admin.username === "MAKOMTI" ? (
-          <MakomtiTable allUsers={allUsers} admin={admin} />
+          <MakomtiTable allUsers={filteredUsers} admin={admin} />
         ) : (
-          <DivisionTable allUsers={allUsers} admin={admin} />
+          <DivisionTable allUsers={filteredUsers} admin={admin} />
         )}
       </div>
     </div>

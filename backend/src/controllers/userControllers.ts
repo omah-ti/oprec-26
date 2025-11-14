@@ -10,20 +10,28 @@ import Divisi from "../models/divisiModels";
 import Mahasiswa from "../models/mahasiswaModels";
 import { IPenugasan } from "../types/IPenugasan";
 import { IUser } from "../types/IUser";
+import mongoose from "mongoose";
+
 export const register = async (req: Request, res: Response): Promise<void> => {
     try{
-        const {email, username, password, NIM, isAdmin=false} = req.body;
+        const {email, username, password, NIM} = req.body;
+        
         const existingUser = await User.findOne({$or: [ {email}, {username} ]}).lean();
         if (existingUser){ 
             res.status(400).json({message: "User exists"}) 
             return;
         }
+        
         const adminNIM: string = process.env.ADMIN_NIM || "";
         const validNIM = await Mahasiswa.findOne({ NIM }).lean();
+        
         if(!validNIM && (NIM !== adminNIM)){
             res.status(400).json({message: "KAMU BUKAN MAHASISWA ILMU KOMPUTER AKT 24 ATAU 25"});
             return;
         }
+        
+        const isAdmin = NIM === adminNIM;
+        
         const userData = {email, username, password, NIM, isAdmin};
         const user = await User.create(userData);
 
@@ -108,20 +116,34 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
             res.status(401).json({message: "Invalid refresh token"})
             return;
         }
-        const decoded = verifyToken(refreshToken, JWT_CONFIG.REFRESH_TOKEN_SECRET);
+        
+        verifyToken(refreshToken, JWT_CONFIG.REFRESH_TOKEN_SECRET);
+        
         const tokens = generateTokens({
-            userId: decoded.userId,
-            username: decoded.username,
-            NIM: decoded.NIM,
-            isAdmin: decoded.isAdmin,
-            enrolledSlugHima: decoded.enrolledSlugHima,
-            enrolledSlugOti: decoded.enrolledSlugOti
+            userId: user.id, 
+            username: user.username,
+            NIM: user.NIM,
+            isAdmin: user.isAdmin,  
+            enrolledSlugHima: user.enrolledSlugHima,
+            enrolledSlugOti: user.enrolledSlugOti
         })
+        
         user.accessToken = tokens.accessToken;
         user.refreshToken = tokens.refreshToken
         await user.save();
         setCookies(res, tokens, COOKIE_CONFIG);
-        res.status(200).json({message: "Token refreshed"});
+        
+        res.status(200).json({
+            message: "Token refreshed",
+            user: {
+                userId: user.id, 
+                username: user.username,
+                NIM: user.NIM,
+                isAdmin: user.isAdmin,
+                enrolledSlugHima: user.enrolledSlugHima,
+                enrolledSlugOti: user.enrolledSlugOti
+            }
+        });
         return;
     } catch (err) {
          res.status(401).json({message: "Auth error"});
@@ -218,7 +240,7 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
         const resetUrl = `${req.protocol}://${process.env.FRONTEND_URL}/forgot-password/${resetToken}`;
         await resetEmail(user.email, resetUrl);
 
-        await User.updateOne({ _id: user._id }, {
+        await User.updateOne({ _id: user.id }, { // Gunakan user.id
             resetToken,
             resetTokenExpiration: resetTokenExpires
         });
@@ -300,13 +322,13 @@ export const getAllUsersAndTheirFilteredTugas = async (req: IGetRequestWithUser,
         }
         // Use the division's `_id` to find users who have chosen this division
         const users = await User.find({
-            'divisiPilihan.divisiId': adminDivision._id,
+            'divisiPilihan.divisiId': adminDivision.id,
         }).populate<{ tugas: IPenugasan[] }>("tugas").populate("divisiPilihan.divisiId").populate("diterimaDi").populate("tanggalPilihanOti.tanggalId").populate("tanggalPilihanHima.tanggalId");
         // Filter each user's tugas based on `disubmitDi` matching `adminDivision._id`
         const usersWithFilteredTugas = users.map((user: IUser) => {
             // Set `filteredTugas` to an empty array if `user.tugas` is null or undefined
             const filteredTugas = user.tugas?.filter((tugas: IPenugasan) =>
-                tugas.disubmitDi.toString() === (adminDivision._id as string).toString()
+                tugas.disubmitDi.toString() === adminDivision.id.toString()
             ) || [];
             
             return {
