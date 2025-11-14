@@ -152,24 +152,62 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
 
 export const logout = async(req: Request, res: Response): Promise<void> => {
     try {
+        console.log('=== LOGOUT REQUEST ===');
+        console.log('Cookies received:', req.cookies);
+        
         const accessToken = req.cookies['accessToken'];
+        const refreshToken = req.cookies['refreshToken'];
 
-        clearAuthCookies(res);
+        console.log('Access Token:', accessToken ? 'exists' : 'missing');
+        console.log('Refresh Token:', refreshToken ? 'exists' : 'missing');
+
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none' as const,
+            path: '/',
+        };
+
+        res.clearCookie('accessToken', cookieOptions);
+        res.clearCookie('refreshToken', cookieOptions);
+        
+        console.log('Cookies cleared from response');
 
         if (accessToken) {
             const user = await User.findOne({ accessToken });
             if (user) {
+                console.log('User found, clearing tokens from DB');
                 user.accessToken = undefined;
                 user.refreshToken = undefined;
                 await user.save();
+                console.log('Tokens cleared from DB');
+            } else {
+                console.log('User not found with accessToken');
             }
         }
 
-        res.status(200).json({ message: "Logged out successfully" });
+        res.status(200).json({ 
+            message: "Logged out successfully",
+            cleared: true 
+        });
         return;
     } catch (error) {
-        clearAuthCookies(res);
-        res.status(200).json({ message: "Logged out" });
+        console.error('Logout error:', error);
+        
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none' as const,
+            path: '/',
+        };
+        
+        res.clearCookie('accessToken', cookieOptions);
+        res.clearCookie('refreshToken', cookieOptions);
+        
+        res.status(200).json({ 
+            message: "Logged out",
+            cleared: true 
+        });
         return;
     }
 }

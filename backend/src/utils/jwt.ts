@@ -28,9 +28,23 @@ export const clearAuthCookies = (res: Response): void => {
         httpOnly: true,
         secure: true,
         sameSite: 'none' as const,
-        path: '/'
+        path: '/',
+        domain: process.env.COOKIE_DOMAIN || undefined
     };
     
     res.clearCookie('accessToken', cookieOptions);
     res.clearCookie('refreshToken', cookieOptions);
+    
+    res.clearCookie('accessToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none' as const,
+        path: '/'
+    });
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none' as const,
+        path: '/'
+    });
 };
