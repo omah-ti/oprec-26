@@ -10,6 +10,7 @@ const penugasanSchema: Schema<IPenugasan> = new Schema({
     deskripsiPenugasan: String,
     toolsPenugasan: String,
     linkPenugasan: String,
+    deadline: Date,
 })
 const divisiSchema: Schema<IDivisi> = new Schema({
     judul: String,
