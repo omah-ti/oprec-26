@@ -45,7 +45,11 @@ const TitleCTA = () => (
           Daftar Sekarang
         </Button>
       </Link>
-      <Link href={`guidebook`}>
+      <Link
+        href="https://drive.google.com/drive/folders/1zwWYdQSDkSlR-CFugKWFJLfX4LOjCRru?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Button
           variant={`secondary`}
           size={`lg`}

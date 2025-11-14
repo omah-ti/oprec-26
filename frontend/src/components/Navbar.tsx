@@ -18,7 +18,7 @@ import {
 const Navbar = () => {
   return (
     <>
-      <nav className="fixed z-50">
+      <nav className="fixed z-[999]">
         <Container parentClass="py-4 w-screen bg-custom-black/90 backdrop-blur-md">
           <section className="flex w-full items-center justify-between">
             <Title link />
