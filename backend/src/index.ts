@@ -18,11 +18,28 @@ const app: any = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL || "https://oprec-makomti.vercel.app",
+  "http://localhost:3000"
+];
+
 // CORS
-app.use(cors({
-    origin: process.env.FRONTEND_COMPLETE_URL,
-    credentials: true
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, 
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], 
+    allowedHeaders: ["Content-Type", "Authorization"], 
+  })
+);
 
 // Security & parsing
 app.use(cookieParser());

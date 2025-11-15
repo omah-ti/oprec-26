@@ -62,17 +62,13 @@ const getCookie = (name: string): string | null => {
 const handleSubmit = async () => {
   if (clickedButtons !== null && !hasMax) {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/divisi/${params}/choose`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ urutanPrioritas: clickedButtons }),
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`/api/divisi/${params}/choose`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ urutanPrioritas: clickedButtons }),
+      });
 
       const responseJson = await res.json().catch(() => ({}));
 
