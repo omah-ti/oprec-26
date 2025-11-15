@@ -33,41 +33,54 @@ const Penugasan = ({
   } = useForm();
   const { toast } = useToast();
 
-  // const handlePengumpulan = async (formData: any) => {
-  //   try {
-  //     setLoading(true);
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/divisi/${data.slug}/submit`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ link: formData.link, comment: " " }),
-  //         credentials: "include",
-  //       },
-  //     );
+  const handlePengumpulan = async (formData: any) => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/penugasan/submit/${data.slug}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ link: formData.link, comment: " " }),
+          credentials: "include",
+        },
+      );
 
-  //     toast({
-  //       title: `Tugas berhasil di-submit`,
-  //       description: `Sampai jumpa di hari Wawancara! 😁`,
-  //     });
-  //     setLoading(false);
+      if (!res.ok) {
+        const errorData = await res.json();
+        toast({
+          title: `Gagal submit tugas`,
+          description: errorData.message || `Terjadi kesalahan`,
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
 
-  //     if (!res.ok) {
-  //       setLoading(false);
-  //       throw new Error("Failed to submit the link");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setLoading(false);
-  //   }
-  // };
+      toast({
+        title: `Tugas berhasil di-submit`,
+        description: `Sampai jumpa di hari Wawancara! 😁`,
+      });
+      setLoading(false);
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: `Error`,
+        description: `Gagal submit tugas`,
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
+  };
 
   const handleUpdatePenugasan = async (formData: any) => {
     try {
+      setLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/divisi/${existingPenugasan._id}/update`,
+        `${process.env.NEXT_PUBLIC_API_URL}/penugasan/update/${existingPenugasan._id}`,
         {
           method: "PUT",
           headers: {
@@ -78,16 +91,31 @@ const Penugasan = ({
         },
       );
 
+      if (!res.ok) {
+        const errorData = await res.json();
+        toast({
+          title: `Gagal update tugas`,
+          description: errorData.message || `Terjadi kesalahan`,
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
       toast({
         title: `Tugas berhasil di-update`,
         description: `Sampai jumpa di hari Wawancara! 😁`,
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to update penugasan data");
-      }
+      setLoading(false);
+      window.location.reload();
     } catch (err) {
       console.error(err);
+      toast({
+        title: `Error`,
+        description: `Gagal update tugas`,
+        variant: "destructive",
+      });
+      setLoading(false);
     }
   };
 
@@ -126,6 +154,65 @@ const Penugasan = ({
             </Button>
           </Link>
         </div>
+
+        {hasEnrolled && (
+          <div className="flex flex-col gap-2 border-t border-custom-gray pt-3">
+            <h1 className="font-semibold">Submit Tugas</h1>
+            {existingPenugasan ? (
+              <form onSubmit={handleSubmit(handleUpdatePenugasan)} className="space-y-2">
+                <input
+                  type="url"
+                  {...register("existingLink", { required: true })}
+                  defaultValue={existingPenugasan.link}
+                  placeholder="https://drive.google.com/..."
+                  className="w-full rounded-md bg-custom-gray px-3 py-2 text-sm text-white placeholder:text-gray-400"
+                />
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full text-base"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <LoaderCircle className="mr-2 h-5 w-5 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    "Update Tugas"
+                  )}
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit(handlePengumpulan)} className="space-y-2">
+                <input
+                  type="url"
+                  {...register("link", { required: true })}
+                  placeholder="https://drive.google.com/..."
+                  className="w-full rounded-md bg-custom-gray px-3 py-2 text-sm text-white placeholder:text-gray-400"
+                />
+                {errors.link && (
+                  <p className="text-xs text-red-500">Link tugas wajib diisi</p>
+                )}
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full text-base"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <LoaderCircle className="mr-2 h-5 w-5 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Tugas"
+                  )}
+                </Button>
+              </form>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
