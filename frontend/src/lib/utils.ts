@@ -40,50 +40,60 @@ export const LINIMASA_DETAIL = [
 
 // FAQ QUESTIONS AND ANSWERS
 // --------------------------------------------------------------------
-export const OMAHTI_FAQ = [
-  {
-    question: "Siapa saja yang bisa mendaftar ke OMAHTI?",
-    answer:
-      "Mahasiswa dari jurusan ilmu komputer yang tertarik di bidang Teknologi Informasi dipersilakan untuk mendaftar.",
-  },
-  {
-    question: "Apa saja kegiatan yang dilakukan di OMAHTI?",
-    answer:
-      "OMAHTI menyelenggarakan kegiatan berdasarkan 4 pilar, pelatihan, perlombaan, penelitian, dan projek.",
-  },
+export const MERGED_FAQ = [
   {
     question: "Apakah perlu pengalaman khusus untuk bergabung?",
     answer:
-      "Tidak, semua level pengalaman diterima, baik yang masih belajar maupun yang sudah berpengalaman di bidang TI. Namun, terdapat penugasan sesuai divisi yang dipilih.",
+      "Tidak, semua level pengalaman diterima, baik yang masih belajar maupun yang sudah berpengalaman di bidang TI.",
   },
   {
-    question: "Bagaimana proses seleksi di OMAHTI?",
-    answer:
-      "Proses seleksi melibatkan proses penugasan dan wawancara di pilihan yang lebih diprioritaskan",
-  },
-];
-export const HIMAKOM_FAQ = [
-  {
-    question: "Apa saja syarat untuk bergabung dengan HIMAKOM?",
-    answer:
-      "Syarat utama adalah mahasiswa aktif jurusan Ilmu Komputer yang bersemangat dalam mengembangkan potensi di bidang teknologi.",
-  },
-  {
-    question: "Apakah harus sudah mahir dalam coding untuk mendaftar?",
-    answer:
-      "Tidak, HIMAKOM membuka kesempatan bagi semua level kemampuan. Baik pemula maupun yang sudah berpengalaman dapat bergabung!",
-  },
-  {
-    question: "Bagaimana proses seleksi anggota HIMAKOM?",
+    question: "Bagaimana proses seleksi di OMAHTI dan HIMAKOM?",
     answer:
       "Proses seleksi melibatkan tahap pemilihan divisi, penugasan sesuai divisi, dan wawancara.",
   },
   {
-    question: "Apakah HIMAKOM hanya untuk mahasiswa Ilmu Komputer?",
+    question: "Berapa divisi yang dapat dipilih?",
     answer:
-      "Ya, HIMAKOM dikhususkan untuk mahasiswa Ilmu Komputer. Namun, dalam beberapa kegiatan, kami membuka kolaborasi dengan jurusan lain.",
+      "Kamu dapat memilih hingga 4 pilihan divisi: maksimal 2 divisi OmahTI dan maksimal 2 divisi HIMAKOM.",
+  },
+  {
+    question: "Bolehkah memilih hanya 1 divisi?",
+    answer:
+      "Boleh. Kamu bebas memilih 1 atau 2 divisi dari masing-masing organisasi sesuai minat.",
+  },
+  {
+    question: "Apakah pilihan divisi bersifat prioritas?",
+    answer:
+      "Ya. Kamu dapat mengatur urutan prioritas, dan proses evaluasi akan mempertimbangkan prioritas tersebut.",
+  },
+  {
+    question: "Apakah setiap divisi memiliki penugasan yang sama?",
+    answer:
+      "Tidak. Setiap divisi memiliki ketentuan dan materi penugasan yang berbeda. Pastikan membaca ketentuan pada halaman divisi yang kamu pilih.",
+  },
+  {
+    question: "Bagaimana cara melihat detail penugasan?",
+    answer:
+      "Setelah login, kamu bisa membuka dashboard divisi yang kamu pilih. Di sana sudah ada informasi tentang penugasan, termasuk instruksi, file, dan ketentuannya.",
+  },
+  {
+    question:
+      "Apakah semua penugasan dari divisi yang dipilih harus dikerjakan?",
+    answer:
+      "Ya. Jika kamu memilih lebih dari satu divisi, kamu wajib mengerjakan setiap task dari setiap divisi tersebut.",
+  },
+  {
+    question: "Di mana hasil seleksi diumumkan?",
+    answer:
+      "Hasil seleksi akan diumumkan di dashboard sesuai jadwal yang sudah ditentukan.",
+  },
+  {
+    question: "Apakah bisa diterima di lebih dari satu divisi?",
+    answer:
+      "Tidak. Kamu hanya akan diterima di 1 divisi berdasarkan evaluasi tugas, wawancara, dan prioritas pilihanmu.",
   },
 ];
+
 // --------------------------------------------------------------------
 
 // date formatter

@@ -7,11 +7,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { HIMAKOM_FAQ, OMAHTI_FAQ } from "@/lib/utils";
+import { MERGED_FAQ } from "@/lib/utils";
 import himakomFaq from "@/assets/beranda/faq/faq-himakom.webp";
 import omahtiFaq from "@/assets/beranda/faq/faq-oti.webp";
 
 const Faq = () => {
+  const half = Math.ceil(MERGED_FAQ.length / 2);
+  const leftFAQ = MERGED_FAQ.slice(0, half);
+  const rightFAQ = MERGED_FAQ.slice(half);
+
   return (
     <Container>
       <Header>Empowering Individuals, Building Communities</Header>
@@ -35,11 +39,11 @@ const Faq = () => {
       {/* FAQ section */}
       <div className="mt-4 w-full gap-8 space-y-3 lg:flex lg:items-start lg:justify-start lg:gap-3 lg:space-y-0">
         <div className="flex flex-col gap-3 lg:w-1/2">
-          <Questions variant="omahti" FAQ={OMAHTI_FAQ} />
+          <Questions FAQ={leftFAQ} />
         </div>
 
         <div className="flex flex-col gap-3 lg:w-1/2">
-          <Questions variant="himakom" FAQ={HIMAKOM_FAQ} />
+          <Questions FAQ={rightFAQ} />
         </div>
       </div>
     </Container>
@@ -79,10 +83,8 @@ const ImagesCard = ({
 };
 
 const Questions = ({
-  variant = "omahti",
   FAQ,
 }: {
-  variant?: "omahti" | "himakom";
   FAQ: { question: string; answer: string }[];
 }) => {
   return (
