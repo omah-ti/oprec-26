@@ -6,7 +6,7 @@ import { IDivisi } from "../types/IDivisi";
 import { IUser } from "../types/IUser";
 import { generateTokens, setCookies } from "../utils/jwt";
 import { COOKIE_CONFIG } from "../config/jwtcookies";
-
+//
 const MAX_DIVISIONS_PER_TYPE = 2;
 
 class DivisionSelectionError extends Error {
