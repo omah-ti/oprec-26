@@ -51,35 +51,48 @@ const PopupUrutan = ({
     }
   };
 
-  const handleSubmit = async () => {
-    if (clickedButtons !== null && !hasMax) {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/divisi/${params}/choose`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ urutanPrioritas: clickedButtons }),
-            credentials: "include",
+const getCookie = (name: string): string | null => {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp("(^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, "\\$1") + "=([^;]*)")
+  );
+  return match ? decodeURIComponent(match[2]) : null;
+};
+
+const handleSubmit = async () => {
+  if (clickedButtons !== null && !hasMax) {
+    try {
+      const accessToken = getCookie("accessToken");
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/divisi/${params}/choose`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(accessToken
+              ? { Authorization: `Bearer ${accessToken}` }
+              : {}),
           },
-        );
-        
-        const responseJson = await res.json();
-        
-        if (!res.ok) {
-          setErrorMessage(responseJson.message);
-          setShowErrorModal(true);
-        } else {
-          setShowSuccessModal(true);
+          body: JSON.stringify({ urutanPrioritas: clickedButtons }),
+          credentials: "include",
         }
-      } catch (error) {
+      );
+
+      const responseJson = await res.json();
+
+      if (!res.ok) {
+        setErrorMessage(responseJson.message);
         setShowErrorModal(true);
-        setErrorMessage("Terjadi kesalahan saat memilih divisi");
+      } else {
+        setShowSuccessModal(true);
       }
+    } catch {
+      setShowErrorModal(true);
+      setErrorMessage("Terjadi kesalahan saat memilih divisi");
     }
-  };
+  }
+};
 
   const handleClose = () => {
     setShowSuccessModal(false);
