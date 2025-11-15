@@ -13,7 +13,6 @@ export const COOKIE_CONFIG: CookieOptions = {
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   path: "/",
   maxAge: 7 * 24 * 60 * 60 * 1000,
-  domain: process.env.NODE_ENV === "production" ? undefined : undefined 
 };
 
 export const CLEAR_COOKIE_CONFIG: CookieOptions = {

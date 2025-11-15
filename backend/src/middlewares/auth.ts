@@ -10,41 +10,49 @@ export const authenticateToken = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // Debug logs
-    console.log('=== AUTH DEBUG ===');
-    console.log('All cookies:', req.cookies);
-    console.log('Raw cookie header:', req.headers.cookie);
-    
-    const accessToken = req.cookies?.accessToken || req.cookies?.['accessToken'];
-    
+    console.log("=== AUTH DEBUG ===");
+    console.log("All cookies:", req.cookies);
+    console.log("Raw cookie header:", req.headers.cookie);
+
+    let accessToken =
+      req.cookies?.accessToken || req.cookies?.["accessToken"];
+
+    // Fallback: baca dari Authorization header
     if (!accessToken) {
-      console.log('No access token found in cookies');
+      const authHeader = req.headers.authorization;
+      if (authHeader?.startsWith("Bearer ")) {
+        accessToken = authHeader.slice(7);
+        console.log("Access token from Authorization header");
+      }
+    }
+
+    if (!accessToken) {
+      console.log("No access token found in cookies or header");
       res.status(401).json({ message: "No access token found" });
       return;
     }
 
-    console.log('Access token found:', accessToken.substring(0, 20) + '...');
-
     const decoded = verifyToken(accessToken, JWT_CONFIG.ACCESS_TOKEN_SECRET);
-    if(!decoded) {
-      console.log('Token verification failed');
+    if (!decoded) {
       res.status(401).json({ message: "Token might be invalid or expired" });
       return;
     }
 
     const user = await User.findById(decoded.userId);
     if (!user || user.accessToken !== accessToken) {
-      console.log('User not found or token mismatch');
-      res.status(401).json({ message: "Invalid or expired access token, please login again if this keeps happening" });
+      res
+        .status(401)
+        .json({
+          message:
+            "Invalid or expired access token, please login again if this keeps happening",
+        });
       return;
     }
 
-    console.log('Auth successful for user:', decoded.username);
     req.user = decoded;
     next();
   } catch (err) {
-    console.log('Auth error:', err);
+    console.log("Auth error:", err);
     res.status(401).json({ message: "Token might be invalid or expired" });
-    return;
   }
 };
