@@ -29,6 +29,7 @@ export const pilihDivisi = async (req: IGetRequestWithUser, res: Response): Prom
             Divisi.findOne({ slug: divisiSlug }),
             User.findById(req.user.userId).populate("divisiPilihanOti").populate("divisiPilihanHima")
         ]);
+        
         // Validate existence
         if (!divisi || !user) {
             throw new DivisionSelectionError("Division or user not found");
@@ -48,6 +49,8 @@ export const pilihDivisi = async (req: IGetRequestWithUser, res: Response): Prom
 
         // Update division slots
         divisi.dipilihOleh = [...(divisi.dipilihOleh || []), req.user.userId];
+        
+        // Generate new tokens
         const tokens = generateTokens({
             userId: user.id,
             username: user.username,
@@ -55,14 +58,23 @@ export const pilihDivisi = async (req: IGetRequestWithUser, res: Response): Prom
             isAdmin: user.isAdmin,
             enrolledSlugHima: user.enrolledSlugHima,
             enrolledSlugOti: user.enrolledSlugOti
-        })
+        });
+        
+        // Set cookies di response header
         setCookies(res, tokens, COOKIE_CONFIG);
-        // Save changes
+        
+        // Save to database
         user.accessToken = tokens.accessToken;
         user.refreshToken = tokens.refreshToken;
         await Promise.all([user.save(), divisi.save()]);
 
-        res.status(200).json({ message: "Berhasil mendaftar ke divisi ini", accessToken: tokens.accessToken, refreshToken: tokens.refreshToken });
+        res.status(200).json({ 
+            message: "Berhasil mendaftar ke divisi ini",
+            user: {
+                enrolledSlugHima: user.enrolledSlugHima,
+                enrolledSlugOti: user.enrolledSlugOti
+            }
+        });
         return;
     } catch (error) {
         const status = error instanceof DivisionSelectionError ? error.statusCode : 500;

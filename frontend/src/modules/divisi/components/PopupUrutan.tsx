@@ -11,10 +11,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import PopupDivisiBerhasil from "./PopupDivisiBerhasil";
-import Cookies from "js-cookie";
 import ErrorPopup from "@/components/ErrorPopup";
 import { useRouter } from "next/navigation";
-import { set } from "react-hook-form";
+
 type PopUpMilihProps = {
   className?: string;
   hasEnrolled: boolean;
@@ -52,10 +51,6 @@ const PopupUrutan = ({
     }
   };
 
-  // const handleSubmit = async () => {
-  //   console.error("Pendaftaran ditutup!")
-  // }
-
   const handleSubmit = async () => {
     if (clickedButtons !== null && !hasMax) {
       try {
@@ -70,25 +65,25 @@ const PopupUrutan = ({
             credentials: "include",
           },
         );
+        
         const responseJson = await res.json();
+        
         if (!res.ok) {
           setErrorMessage(responseJson.message);
           setShowErrorModal(true);
         } else {
-          Cookies.set("accessToken", responseJson.accessToken);
-          Cookies.set("refreshToken", responseJson.refreshToken);
-          setShowSuccessModal(true); // Show success modal on success
+          setShowSuccessModal(true);
         }
       } catch (error) {
         setShowErrorModal(true);
-        setErrorMessage("");
+        setErrorMessage("Terjadi kesalahan saat memilih divisi");
       }
     }
   };
 
   const handleClose = () => {
     setShowSuccessModal(false);
-    router.refresh;
+    router.refresh(); 
   };
 
   const handleErrorClose = () => {
@@ -179,7 +174,6 @@ const PopupUrutan = ({
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Success Modal */}
       {showSuccessModal && (
         <PopupDivisiBerhasil open={showSuccessModal} onClose={handleClose} />
       )}
