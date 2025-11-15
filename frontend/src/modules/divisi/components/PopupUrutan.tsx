@@ -60,34 +60,40 @@ const getCookie = (name: string): string | null => {
 };
 
 const handleSubmit = async () => {
-    if (clickedButtons !== null && !hasMax) {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/divisi/${params}/choose`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ urutanPrioritas: clickedButtons }),
-            credentials: "include", 
-          }
-        );
-
-        const responseJson = await res.json();
-
-        if (!res.ok) {
-          setErrorMessage(responseJson.message);
-          setShowErrorModal(true);
-        } else {
-          setShowSuccessModal(true);
+  if (clickedButtons !== null && !hasMax) {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/divisi/${params}/choose`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ urutanPrioritas: clickedButtons }),
+          credentials: "include",
         }
-      } catch {
+      );
+
+      const responseJson = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          setErrorMessage(
+            "Sesi kamu sudah berakhir. Silakan login ulang dulu ya."
+          );
+        } else {
+          setErrorMessage(responseJson.message || "Gagal memilih divisi");
+        }
         setShowErrorModal(true);
-        setErrorMessage("Terjadi kesalahan saat memilih divisi");
+      } else {
+        setShowSuccessModal(true);
       }
+    } catch {
+      setShowErrorModal(true);
+      setErrorMessage("Terjadi kesalahan saat memilih divisi");
     }
-  };
+  }
+};
 
   const handleClose = () => {
     setShowSuccessModal(false);

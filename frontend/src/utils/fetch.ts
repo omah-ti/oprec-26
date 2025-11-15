@@ -84,3 +84,37 @@ export const getPenerimaanUser = async (accessToken: string) => {
     
     return pengumumanUser;
 }
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export const fetchWithAuth = async (
+  url: string,
+  options: RequestInit = {},
+  retry = true
+): Promise<Response> => {
+  const fullUrl = `${API_URL}${url}`;
+
+  let res = await fetch(fullUrl, {
+    ...options,
+    credentials: "include",
+    headers: {
+      ...(options.headers || {}),
+    },
+  });
+
+  if (res.status === 401 && retry) {
+    try {
+      const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (refreshRes.ok) {
+        res = await fetchWithAuth(url, options, false);
+      }
+    } catch {
+    }
+  }
+
+  return res;
+};
