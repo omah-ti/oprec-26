@@ -12,6 +12,7 @@ import {
 import ErrorPopup from "@/components/ErrorPopup";
 import { useRouter } from "next/navigation";
 import PopupBerhasil from "../../../components/PopupBerhasil";
+
 interface ScheduleSlot {
   id: string;
   sesi: Date;
@@ -22,7 +23,7 @@ interface PopupProps {
   type: "gagal" | "berhasil" | "berhasilTugas" | "konfirmasi";
   className?: string;
   disabled?: boolean;
-  selectedSlot: ScheduleSlot | null; // Pass selected slot information
+  selectedSlot: ScheduleSlot | null;
 }
 
 export default function Popup({
@@ -37,6 +38,7 @@ export default function Popup({
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>("");
+
   const getContent = () => {
     switch (type) {
       case "gagal":
@@ -85,8 +87,10 @@ export default function Popup({
     if (type === "konfirmasi" && selectedSlot) {
       try {
         setLoading(true);
+        
+        // Call Next.js API route (bukan langsung ke backend)
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/wawancara/${hima}/${selectedSlot.id}`,
+          `/api/wawancara/${hima}/${selectedSlot.id}`,
           {
             method: "POST",
             headers: {
@@ -95,15 +99,15 @@ export default function Popup({
             body: JSON.stringify({
               jamWawancara: selectedSlot.sesi,
             }),
-            credentials: "include",
-          },
+          }
         );
+        
         const responseJSON = await response.json();
+        
         if (response.ok) {
           setLoading(false);
           setSuccessMessage(responseJSON.message);
           setShowSuccessModal(true);
-          // Handle successful confirmation here (e.g., show success popup)
         } else {
           setLoading(false);
           setErrorMessage(responseJSON.message);
@@ -112,13 +116,20 @@ export default function Popup({
         }
       } catch (error) {
         setLoading(false);
-        console.error("Error confirming schedule:");
+        setErrorMessage("Terjadi kesalahan saat memilih jadwal");
+        setShowErrorModal(true);
+        console.error("Error confirming schedule:", error);
       }
     }
   };
 
   const handleErrorClose = () => {
     setShowErrorModal(false);
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    router.refresh(); // Refresh data
   };
 
   return (
@@ -133,7 +144,7 @@ export default function Popup({
       {showSuccessModal && (
         <PopupBerhasil
           open={showSuccessModal}
-          onBerhasilClose={() => setShowSuccessModal(false)}
+          onBerhasilClose={handleSuccessClose}
           successMessage={successMessage || ""}
         />
       )}
@@ -152,12 +163,18 @@ export default function Popup({
             {content.icon}
           </div>
         </div>
-        <div className="mt-8 lg:mt-12 px-4 text-center">
+        <div className="mt-8 px-4 text-center lg:mt-12">
           <p className="text-[0.9rem] text-custom-silver">
             {content.headerText}
           </p>
-          <AlertDialogTitle className={`text-xl text-custom-silver mt-3 mb-2`}>{content.title}</AlertDialogTitle>
-          <p className="mb-4 text-[0.9rem] text-custom-silver">{content.subtitle}</p>
+          <AlertDialogTitle
+            className={`mb-2 mt-3 text-xl text-custom-silver`}
+          >
+            {content.title}
+          </AlertDialogTitle>
+          <p className="mb-4 text-[0.9rem] text-custom-silver">
+            {content.subtitle}
+          </p>
         </div>
 
         <div className="flex flex-col-reverse items-center justify-center gap-2 p-4 pt-0 *:text-[0.9rem] xxs:flex-row sm:px-4 lg:flex-row lg:pt-4">
@@ -175,7 +192,7 @@ export default function Popup({
           )}
           <AlertDialogAction asChild>
             <Button
-              onClick={handleConfirm} // Trigger confirmation request
+              onClick={handleConfirm}
               size={`lg`}
               disabled={loading}
               className={`w-full ${content.cancelable ? "lg:w-1/2" : ""}`}
