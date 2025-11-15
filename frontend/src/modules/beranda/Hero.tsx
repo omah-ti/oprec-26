@@ -74,9 +74,9 @@ const Background = () => (
     {/* gradient wrapper biar gak tembus bawah */}
     <div className="absolute inset-0 overflow-hidden">
       {/* image layer */}
-      <div className="relative h-[600px] w-full">
+      <div className="relative h-[600px] w-full xxs:h-[620px] xs:h-[680px] sm:h-[750px] md:h-[800px]">
         <Image
-          className="absolute -right-[2rem] top-6 z-10 h-[80vh] w-full min-w-[500px] object-contain xxs:right-[2.7rem] xs:right-[9rem]"
+          className="absolute -right-[2rem] top-4 z-10 h-[80vh] w-full min-w-[500px] object-contain xxs:right-[2.7rem] xs:right-[9rem] xs:translate-y-12 md:right-[10rem] md:top-0 lg:right-[10rem]"
           src={omahtiModel}
           width={503}
           height={906}
@@ -84,7 +84,7 @@ const Background = () => (
           priority
         />
         <Image
-          className="absolute -left-[2rem] top-6 z-10 h-[80vh] w-full min-w-[500px] object-contain p-8 xxs:left-[2.7rem] xs:left-[9rem]"
+          className="absolute -left-[2rem] top-4 z-10 h-[90vh] w-full min-w-[500px] object-contain p-8 xxs:left-[2.7rem] xs:left-[9rem] xs:translate-y-[2.5rem] md:left-[9rem] lg:left-[9rem]"
           src={himakomModel}
           width={500}
           height={906}
@@ -92,16 +92,13 @@ const Background = () => (
           priority
         />
       </div>
-
       {/* circle in the background */}
       <div className="absolute bottom-[-10rem] left-1/2 z-0 aspect-square w-full max-w-2xl -translate-x-1/2 rounded-full bg-custom-gray sm:bottom-[-12rem] md:bottom-[-13rem] lg:bottom-[-14rem]" />
-
       {/* gradients */}
       <div className="absolute bottom-0 left-1/2 z-10 h-[85%] w-full bg-gradient-to-t from-custom-blue/100 via-custom-blue/20 to-transparent opacity-100 blur-2xl" />
       <div className="absolute bottom-0 right-1/2 z-10 h-[85%] w-full bg-gradient-to-t from-custom-orange/100 via-custom-orange/20 to-transparent opacity-100 blur-2xl" />
-
-      {/* mask layer to stop gradient overflow */}
-      <div className="absolute bottom-0 left-0 z-20 h-[45px] w-full bg-custom-black sm:h-[55px]" />
+      {/* mask layer to stop gradient overflow
+      <div className="relative bottom-0 left-0 z-20 h-[45px] w-full bg-custom-black sm:h-[55px]" /> */}
     </div>
   </>
 );
@@ -115,7 +112,7 @@ const BenefitsMarquee = () => {
   ];
 
   return (
-    <div className="relative z-50 mt-3 w-full overflow-visible xs:-mt-10 sm:-mt-12 lg:-mt-12">
+    <div className="relative z-50 mt-3 w-full overflow-visible xxs:-mt-6 xs:-mt-10 sm:-mt-12 lg:-mt-12">
       {/* Left shadow */}
       <div
         className="pointer-events-none absolute bottom-0 left-0 z-20 hidden h-10 w-6 bg-gradient-to-r from-custom-gray-dark/100 to-transparent xs:block sm:h-16 md:h-20 md:w-20"
