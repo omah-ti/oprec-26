@@ -6,8 +6,8 @@ import { IGetRequestWithUser } from "../types/getUserRequest";
 
 // Pengumpulan penugasan dibuka: 15 November 2025, 12:00 PM
 // Pengumpulan penugasan ditutup: 21 November 2025, 12:00 PM
-const SUBMISSION_OPEN_DATE = new Date(2025, 10, 15, 12, 0); // November 15, 2025, 12:00 PM
-const SUBMISSION_CLOSE_DATE = new Date(2025, 10, 21, 12, 0); // November 21, 2025, 12:00 PM
+const SUBMISSION_OPEN_DATE = new Date(2025, 10, 15, 5, 0); // November 15, 2025, 12:00 PM
+const SUBMISSION_CLOSE_DATE = new Date(2025, 10, 21, 5, 0); // November 21, 2025, 12:00 PM
 
 const checkSubmissionPeriod = (): { isOpen: boolean; message?: string } => {
     const now = new Date();
